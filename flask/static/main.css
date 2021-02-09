@@ -84,6 +84,11 @@ body{
     cursor: pointer;
 }
 
+label.red{
+    color: var(--red-light);
+    transition: 0.5s;
+}
+
 .label p {
     font-size: .8em;
     margin: auto;
