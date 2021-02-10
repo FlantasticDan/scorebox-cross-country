@@ -39,7 +39,7 @@
 
         <div id="mile-one" class="btn-grid hide">
             {% for runner in runners %}
-            <button disabled class="grid-btn" id="mile-one-btn-{{runner.runner_index}}">
+            <button disabled class="grid-btn" id="mile-one-btn-{{runner.runner_index}}" data-runnerIndex="{{runner.runner_index}}" onclick="splitMileOne(this)">
                 <span class="jersey-number">{{runner.jersey}}</span><br>
                 <span class="runner-clock" id="mile-one-clock-{{runner.runner_index}}">0:00</span>
             </button>
@@ -48,7 +48,7 @@
 
         <div id="mile-two" class="btn-grid hide">
             {% for runner in runners %}
-            <button disabled class="grid-btn" id="mile-two-btn-{{runner.runner_index}}">
+            <button disabled class="grid-btn" id="mile-two-btn-{{runner.runner_index}}" data-runnerIndex="{{runner.runner_index}}"  onclick="splitMileTwo(this)">
                 <span class="jersey-number">{{runner.jersey}}</span><br>
                 <span class="runner-clock" id="mile-two-clock-{{runner.runner_index}}">0:00</span>
             </button>
@@ -57,7 +57,7 @@
 
         <div id="finish" class="btn-grid hide">
             {% for runner in runners %}
-            <button disabled class="grid-btn" id="finish-btn-{{runner.runner_index}}">
+            <button disabled class="grid-btn" id="finish-btn-{{runner.runner_index}}" data-runnerIndex="{{runner.runner_index}}" onclick="finishRunner(this)">
                 <span class="jersey-number">{{runner.jersey}}</span><br>
                 <span class="runner-clock" id="finish-clock-{{runner.runner_index}}">0:00</span>
             </button>

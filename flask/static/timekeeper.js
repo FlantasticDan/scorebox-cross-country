@@ -66,7 +66,7 @@ function animationInterval(ms, signal, callback) {
     scheduleFrame(start);
 }
 
-let eventObject
+window.eventObject = undefined
 
 function updateRunner(runner) {
      const runnerMileOne = document.getElementById(`mile-one-btn-${runner.runner_index}`)
@@ -84,14 +84,14 @@ function updateRunner(runner) {
         runnerMileTwo.disabled = true
         runnerFinish.disabled = false
     }
-    if (runner.finsih > 0){
+    if (runner.finish > 0){
         runnerFinish.disabled = true
     }
 }
 
 function updateEvent() {
-    eventObject.runners.forEach(runner => updateRunner(runner))
-    if (eventObject.start > 0) {
+    window.eventObject.runners.forEach(runner => updateRunner(runner))
+    if (window.eventObject.start > 0) {
         startBtn.disabled = true
     }
 }
@@ -106,20 +106,25 @@ function formatTime(milliseconds) {
 const clock = document.getElementById('clock')
 function timerTick() {
     const reference = Date.now()
-    if (eventObject.start > 0) {
-        clock.innerText = formatTime(reference - eventObject.start)
+    if (window.eventObject.start > 0) {
+        clock.innerText = formatTime(reference - window.eventObject.start)
 
-        eventObject.runners.forEach(runner => {
-            if (runner.mile_one == 0) {
+        window.eventObject.runners.forEach(runner => {
+            if (runner.mile_one == 0 && runner.mile_two == 0) {
                 document.getElementById(`mile-one-clock-${runner.runner_index}`).innerText = formatTime(reference - runner.start)
             }
             else {
-                if (runner.mile_two == 0) {
+                document.getElementById(`mile-one-clock-${runner.runner_index}`).innerText = formatTime(runner.mile_one - runner.start)
+                if (runner.mile_two == 0 && runner.finish == 0) {
                     document.getElementById(`mile-two-clock-${runner.runner_index}`).innerText = formatTime(reference - runner.mile_one)
                 }
                 else {
+                    document.getElementById(`mile-two-clock-${runner.runner_index}`).innerText = formatTime(runner.mile_two - runner.mile_one)
                     if (runner.finish == 0) {
                         document.getElementById(`finish-clock-${runner.runner_index}`).innerText = formatTime(reference - runner.mile_two)
+                    }
+                    else{
+                        document.getElementById(`finish-clock-${runner.runner_index}`).innerText = formatTime(runner.finish - runner.start)
                     }
                 }
             }
@@ -139,7 +144,7 @@ socket.on('connect', () => {
 })
 
 socket.on('event-reset', payload => {
-    eventObject = payload
+    window.eventObject = payload
     updateEvent()
 })
 
@@ -150,3 +155,32 @@ function startEvent(){
 }
 
 startBtn.onclick = startEvent
+
+function splitMileOne(btn) {
+    btn.disabled = true
+    socket.emit('mile-one', {
+        runner: parseInt(btn.dataset.runnerindex),
+        timestamp: Date.now()
+    })
+}
+
+function splitMileTwo(btn) {
+    btn.disabled = true
+    socket.emit('mile-two', {
+        runner: parseInt(btn.dataset.runnerindex),
+        timestamp: Date.now()
+    })
+}
+
+function finishRunner(btn) {
+    btn.disabled = true
+    socket.emit('finish', {
+        runner: parseInt(btn.dataset.runnerindex),
+        timestamp: Date.now()
+    })
+}
+
+socket.on('runner-update', payload => {
+    updateRunner(payload)
+    window.eventObject.runners[payload.runner_index] = payload
+})

@@ -13,7 +13,7 @@ from test import RUNNERS
 MANAGER = None
 
 app = Flask(__name__)
-socketio = SocketIO(app)
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 @app.route('/')
 def index():
@@ -44,7 +44,25 @@ def update_client(data):
 def start_event(json):
     global MANAGER
     MANAGER.start_event(json['start'])
-    return emit('event-reset', MANAGER.get_event_object())
+    return emit('event-reset', MANAGER.get_event_object(), broadcast=True)
+
+@socketio.on('mile-one')
+def split_mile_one(json):
+    global MANAGER
+    MANAGER.split_mile_one(json['runner'], json['timestamp'])
+    return emit('runner-update', MANAGER.runners[json['runner']], broadcast=True)
+
+@socketio.on('mile-two')
+def split_mile_two(json):
+    global MANAGER
+    MANAGER.split_mile_two(json['runner'], json['timestamp'])
+    return emit('runner-update', MANAGER.runners[json['runner']], broadcast=True)
+
+@socketio.on('finish')
+def finish_runner(json):
+    global MANAGER
+    MANAGER.finish_runner(json['runner'], json['timestamp'])
+    return emit('runner-update', MANAGER.runners[json['runner']], broadcast=True)
 
 if __name__ == '__main__':
     # webbrowser.open('http://localhost:5000')
