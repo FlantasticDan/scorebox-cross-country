@@ -231,3 +231,37 @@ button.menu-btn.checked{
     font-weight: 600;
     background-color: var(--mid-grey);
 }
+
+.btn-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(115px, 1fr));
+    gap: 1em;
+    margin: auto 1em;
+}
+
+button.grid-btn{
+    width: 100%;
+    text-align: center;
+    padding: 0.5em;
+    font-family: 'Open Sans';
+    color: white;
+    background-color: var(--blue-primary);
+    border: 0px solid;
+    outline: 0px;
+    cursor: pointer;
+}
+
+button.grid-btn:disabled{
+    color: var(--mid-grey);
+    background-color: var(--less-dark-grey);
+}
+
+button.grid-btn .jersey-number{
+    font-size: 3em;
+    font-weight: 800;
+}
+
+button.grid-btn .runner-clock{
+    font-size: 1.5em;
+    font-weight: 500;
+}
