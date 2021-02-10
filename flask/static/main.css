@@ -255,6 +255,7 @@ button.grid-btn{
 button.grid-btn:disabled{
     color: var(--mid-grey);
     background-color: var(--less-dark-grey);
+    cursor: not-allowed;
 }
 
 button.grid-btn .jersey-number{

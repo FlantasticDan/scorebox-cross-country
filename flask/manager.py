@@ -9,7 +9,7 @@ def process_csv(csv_string: str):
         fields = line.split(',')
         runner = {
             'runner_index': i,
-            'jersery': fields[0],
+            'jersey': fields[0],
             'name': fields[1],
             'team': fields[2],
             'start': 0,
@@ -35,11 +35,14 @@ class CrossCountryManager:
         self.tag = tag
         self.runners = process_csv(csv)
 
+        self.start = 0
+
         self.mile_one = None
         self.mile_two = None
         self.finish = None
 
     def start_event(self, timestamp):
+        self.start = timestamp
         for i in range(len(self.runners)):
             self.runners[i]['start'] = timestamp
     
@@ -87,4 +90,8 @@ class CrossCountryManager:
         
         return formatted
 
-        
+    def get_event_object(self):
+        return {
+            'start': self.start,
+            'runners': self.runners
+        }

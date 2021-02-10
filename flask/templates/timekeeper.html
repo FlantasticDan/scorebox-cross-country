@@ -30,7 +30,7 @@
         <div id="start" class="hide">
 
             <div class="center-contents-absolute">
-                <button class="btn green big">
+                <button class="btn green big" id="start-btn">
                     START RACE
                 </button>
             </div>
@@ -40,7 +40,7 @@
         <div id="mile-one" class="btn-grid hide">
             {% for runner in runners %}
             <button disabled class="grid-btn" id="mile-one-btn-{{runner.runner_index}}">
-                <span class="jersey-number">{{runner.runner_index}}</span><br>
+                <span class="jersey-number">{{runner.jersey}}</span><br>
                 <span class="runner-clock" id="mile-one-clock-{{runner.runner_index}}">0:00</span>
             </button>
             {% endfor %}
@@ -49,7 +49,7 @@
         <div id="mile-two" class="btn-grid hide">
             {% for runner in runners %}
             <button disabled class="grid-btn" id="mile-two-btn-{{runner.runner_index}}">
-                <span class="jersey-number">{{runner.runner_index}}</span><br>
+                <span class="jersey-number">{{runner.jersey}}</span><br>
                 <span class="runner-clock" id="mile-two-clock-{{runner.runner_index}}">0:00</span>
             </button>
             {% endfor %}
@@ -58,7 +58,7 @@
         <div id="finish" class="btn-grid hide">
             {% for runner in runners %}
             <button disabled class="grid-btn" id="finish-btn-{{runner.runner_index}}">
-                <span class="jersey-number">{{runner.runner_index}}</span><br>
+                <span class="jersey-number">{{runner.jersey}}</span><br>
                 <span class="runner-clock" id="finish-clock-{{runner.runner_index}}">0:00</span>
             </button>
             {% endfor %}
