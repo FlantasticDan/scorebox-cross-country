@@ -46,25 +46,30 @@ def update_client(data):
 @socketio.on('start')
 def start_event(json):
     global MANAGER
-    MANAGER.start_event(json['start'])
+    if MANAGER.start == 0:
+        MANAGER.start_event(json['start'])
+        OVERLAY.start_clock(MANAGER.start)
     return emit('event-reset', MANAGER.get_event_object(), broadcast=True)
 
 @socketio.on('mile-one')
 def split_mile_one(json):
     global MANAGER
     MANAGER.split_mile_one(json['runner'], json['timestamp'])
+    OVERLAY.push_json(MANAGER.export_placements())
     return emit('runner-update', MANAGER.runners[json['runner']], broadcast=True)
 
 @socketio.on('mile-two')
 def split_mile_two(json):
     global MANAGER
     MANAGER.split_mile_two(json['runner'], json['timestamp'])
+    OVERLAY.push_json(MANAGER.export_placements())
     return emit('runner-update', MANAGER.runners[json['runner']], broadcast=True)
 
 @socketio.on('finish')
 def finish_runner(json):
     global MANAGER
     MANAGER.finish_runner(json['runner'], json['timestamp'])
+    OVERLAY.push_json(MANAGER.export_placements())
     return emit('runner-update', MANAGER.runners[json['runner']], broadcast=True)
 
 if __name__ == '__main__':

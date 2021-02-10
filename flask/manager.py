@@ -97,3 +97,33 @@ class CrossCountryManager:
             'start': self.start,
             'runners': self.runners
         }
+    
+    def export_placements(self):
+        placements = None
+        export = {'mode': 'placement'}
+        if self.finish:
+            placements = self.finish
+            export = {'heading': 'Finish'}
+        elif self.mile_two:
+            placements = self.mile_two
+            export = {'heading': 'Mile 2 Split'}
+        elif self.mile_one:
+            placements = self.mile_one
+            export = {'heading': 'Mile 1 Split'}
+        else:
+            return
+        max_entries = 15
+        placements = placements[:5] + placements[5:][(-1 * (max_entries - 5)):]
+        for i in range(max_entries):
+            if i <= len(placements) - 1:
+                runner = {
+                    f'{i}place': i + 1,
+                    f'{i}team':placements[i]['team'],
+                    f'{i}jersey':placements[i]['jersey'],
+                    f'{i}name':placements[i]['name'],
+                    f'{i}display':placements[i]['display']
+                }
+                export.update(runner)
+            else:
+                export.update({f'{i}place': 0})
+        return export
