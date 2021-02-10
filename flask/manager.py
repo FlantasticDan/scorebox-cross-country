@@ -26,6 +26,8 @@ def format_time(milliseconds):
     pretty_time = time.strftime('%M:%S', time.gmtime(int(string_time)))
     if pretty_time[0] == '0':
         pretty_time = pretty_time[1:]
+        if pretty_time[0] == '0':
+            pretty_time = pretty_time[2:]
     return f'{pretty_time}.{decimal}'
 
 class CrossCountryManager:
