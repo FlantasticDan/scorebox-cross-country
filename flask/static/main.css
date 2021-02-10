@@ -224,6 +224,7 @@ button.menu-btn{
     background: transparent;
     color: var(--mid-grey);
     border: 2px solid var(--mid-grey);
+    cursor: pointer;
 }
 
 button.menu-btn.checked{
@@ -264,4 +265,8 @@ button.grid-btn .jersey-number{
 button.grid-btn .runner-clock{
     font-size: 1.5em;
     font-weight: 500;
+}
+
+.hide{
+    display: none;
 }

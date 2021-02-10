@@ -16,18 +16,18 @@
 
         <div class="header">
             <div id="clock">
-                28:07
+                0:00
             </div>
 
             <div id="menu">
-                <button class="menu-btn">Start</button>
-                <button class="menu-btn checked">Mile 1</button>
-                <button class="menu-btn">Mile 2</button>
-                <button class="menu-btn">Finish</button>
+                <button id="nav-start" class="menu-btn">Start</button>
+                <button id="nav-mile-one" class="menu-btn">Mile 1</button>
+                <button id="nav-mile-two" class="menu-btn">Mile 2</button>
+                <button id="nav-finish" class="menu-btn">Finish</button>
             </div>
         </div>
 
-        <!-- <div id="start">
+        <div id="start" class="hide">
 
             <div class="center-contents-absolute">
                 <button class="btn green big">
@@ -35,39 +35,36 @@
                 </button>
             </div>
 
-        </div> -->
-
-        <div id="mile-one" class="btn-grid">
-            <button class="grid-btn">
-                <span class="jersey-number">1</span><br>
-                <span class="runner-clock">4:37</span>
-            </button>
-            <button class="grid-btn" disabled>
-                <span class="jersey-number">2</span><br>
-                <span class="runner-clock">2:15</span>
-            </button>
-            <button class="grid-btn">
-                <span class="jersey-number">3</span><br>
-                <span class="runner-clock">8:53</span>
-            </button>
-            <button class="grid-btn" >
-                <span class="jersey-number">4</span><br>
-                <span class="runner-clock">3:44</span>
-            </button>
-            <button class="grid-btn">
-                <span class="jersey-number">5</span><br>
-                <span class="runner-clock">10:21</span>
-            </button>
-            <button class="grid-btn">
-                <span class="jersey-number">6</span><br>
-                <span class="runner-clock">0:54</span>
-            </button>
-            <button class="grid-btn" disabled>
-                <span class="jersey-number">7</span><br>
-                <span class="runner-clock">3:27</span>
-            </button>
         </div>
 
+        <div id="mile-one" class="btn-grid hide">
+            {% for runner in runners %}
+            <button disabled class="grid-btn" id="mile-one-btn-{{runner.runner_index}}">
+                <span class="jersey-number">{{runner.runner_index}}</span><br>
+                <span class="runner-clock" id="mile-one-clock-{{runner.runner_index}}">0:00</span>
+            </button>
+            {% endfor %}
+        </div>
+
+        <div id="mile-two" class="btn-grid hide">
+            {% for runner in runners %}
+            <button disabled class="grid-btn" id="mile-two-btn-{{runner.runner_index}}">
+                <span class="jersey-number">{{runner.runner_index}}</span><br>
+                <span class="runner-clock" id="mile-two-clock-{{runner.runner_index}}">0:00</span>
+            </button>
+            {% endfor %}
+        </div>
+
+        <div id="finish" class="btn-grid hide">
+            {% for runner in runners %}
+            <button disabled class="grid-btn" id="finish-btn-{{runner.runner_index}}">
+                <span class="jersey-number">{{runner.runner_index}}</span><br>
+                <span class="runner-clock" id="finish-clock-{{runner.runner_index}}">0:00</span>
+            </button>
+            {% endfor %}
+        </div>
+
+        <script src="/static/timekeeper.js"></script>
     </body>
 
 </html>
