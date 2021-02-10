@@ -26,6 +26,7 @@ def initialize():
     setup = request.form
     global MANAGER
     MANAGER = CrossCountryManager(setup['title'], setup['tag'], setup['csv'])
+    OVERLAY.set_title_tag(setup['title'], setup['tag'])
     socketio.emit('event-reset', MANAGER.get_event_object(), broadcast=True)
     return 'OK'
 
@@ -38,7 +39,6 @@ def timekeeper():
 def update_client(data):
     global MANAGER
     if MANAGER:
-        OVERLAY.push(MANAGER.start)
         return emit('event-reset', MANAGER.get_event_object())
     else:
         return
