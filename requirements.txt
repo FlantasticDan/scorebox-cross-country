@@ -18,5 +18,6 @@ python-engineio==4.0.0
 python-socketio==5.0.4
 six==1.15.0
 toml==0.10.2
+websock==1.0.4
 Werkzeug==1.0.1
 wrapt==1.12.1

@@ -1,16 +1,18 @@
 import webbrowser
+from threading import Thread
 
 from eventlet.green import socket
-from eventlet.green import threading
+# from eventlet.green import threading
 from eventlet.green import asyncore
 from flask import Flask, render_template, request
 from flask_socketio import SocketIO, emit
 
+from sock import Overlay
+
 from manager import CrossCountryManager
 
-from test import RUNNERS
-
 MANAGER = None
+OVERLAY = Overlay()
 
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
@@ -36,6 +38,7 @@ def timekeeper():
 def update_client(data):
     global MANAGER
     if MANAGER:
+        OVERLAY.push(MANAGER.start)
         return emit('event-reset', MANAGER.get_event_object())
     else:
         return
