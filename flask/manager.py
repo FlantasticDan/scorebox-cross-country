@@ -86,7 +86,7 @@ class CrossCountryManager:
             if key == 'finish' or i == 0:
                 placement['display'] = format_time(runner['raw_split'])
             else:
-                placement['display'] = format_time(runner['raw_split'] - leader)
+                placement['display'] = "+" + format_time(runner['raw_split'] - leader)
 
             formatted.append(placement)
         
@@ -103,16 +103,16 @@ class CrossCountryManager:
         export = {'mode': 'placement'}
         if self.finish:
             placements = self.finish
-            export = {'heading': 'Finish'}
+            export.update({'heading': 'Finish - All Times Unoffical'})
         elif self.mile_two:
             placements = self.mile_two
-            export = {'heading': 'Mile 2 Split'}
+            export.update({'heading': 'Mile 2 Split - All Times Unoffical'})
         elif self.mile_one:
             placements = self.mile_one
-            export = {'heading': 'Mile 1 Split'}
+            export.update({'heading': 'Mile 1 Split - All Times Unoffical'})
         else:
             return
-        max_entries = 15
+        max_entries = 13
         placements = placements[:5] + placements[5:][(-1 * (max_entries - 5)):]
         for i in range(max_entries):
             if i <= len(placements) - 1:
