@@ -13,6 +13,10 @@ def initialize():
     print(request.form)
     return 'OK'
 
+@app.route('/timekeeper')
+def timekeeper():
+    return render_template('timekeeper.html')
+
 if __name__ == '__main__':
     # webbrowser.open('http://localhost:5000')
     app.run(port=5000)
