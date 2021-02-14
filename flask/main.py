@@ -25,8 +25,8 @@ def index():
 def initialize():
     setup = request.form
     global MANAGER
-    MANAGER = CrossCountryManager(setup['title'], setup['tag'], setup['csv'])
-    OVERLAY.set_title_tag(setup['title'], setup['tag'])
+    MANAGER = CrossCountryManager(setup['csv'])
+    OVERLAY.set_title_tag(MANAGER.title, MANAGER.tag)
     socketio.emit('event-reset', MANAGER.get_event_object(), broadcast=True)
     return 'OK'
 

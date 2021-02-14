@@ -12,8 +12,7 @@ A runner object represents all the data ScoreBox has for an individual runner.
     "name": string,
     "team": string,
     "start": UNIX Timestamp (milliseconds),
-    "mile_one": UNIX Timestamp (milliseconds),
-    "mile_two": UNIX Timestamp (milliseconds),
+    "splits": [UNIX Timestamp (milliseconds)],
     "finish": UNIX Timestamp (milliseconds),
 }
 ```

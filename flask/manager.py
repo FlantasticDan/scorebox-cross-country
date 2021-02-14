@@ -5,20 +5,38 @@ from operator import itemgetter
 def process_csv(csv_string: str):
     runners = []
     lines = csv_string.split('\r\n')
-    for i, line in enumerate(lines[1:]):
+
+    title = lines[3].split(',')[2]
+    tag = lines[4].split(',')[2]
+
+    split_labels = lines[6].split(',')[3:]
+    split_labels = list(filter(lambda x: x != '', split_labels))
+    split_template = len(split_labels) * [0]
+
+    team_colors = {}
+    last_team = None
+    for entry in lines[9].split(',')[3:]:
+        if last_team is None:
+            if entry == '':
+                break
+            last_team = entry
+        else:
+            team_colors[last_team] = entry
+            last_team = None
+    
+    for i, line in enumerate(lines[13:]):
         fields = line.split(',')
         runner = {
             'runner_index': i,
             'jersey': fields[0],
-            'name': fields[1],
-            'team': fields[2],
+            'name': fields[2],
+            'team': fields[1],
             'start': 0,
-            'mile_one': 0,
-            'mile_two': 0,
+            'splits': split_template,
             'finish': 0
         }
         runners.append(runner)
-    return runners
+    return title, tag, split_labels, team_colors, runners
 
 def format_time(milliseconds):
     rounded = round(milliseconds / 1000, 1)
@@ -32,10 +50,8 @@ def format_time(milliseconds):
 
 class CrossCountryManager:
     
-    def __init__(self, title, tag, csv):
-        self.title = title
-        self.tag = tag
-        self.runners = process_csv(csv)
+    def __init__(self, csv):
+        self.title, self.tag, self.split_labels, self.team_colors, self.runners = process_csv(csv)
 
         self.start = 0
 
