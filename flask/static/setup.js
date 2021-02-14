@@ -1,6 +1,4 @@
 const eventForm = document.querySelector('#event-form')
-const eventTitle = document.querySelector('#event-title')
-const eventTag = document.querySelector('#event-tag')
 const eventAthletes = document.querySelector('#event-athletes')
 const eventAthletesLabel = document.querySelector('#event-athletes-label')
 
@@ -18,22 +16,6 @@ eventAthletes.onchange = UpdateAthleteLabel
 
 function ValidateSetup() {
     let valid = true
-
-    if (eventTitle.value.length > 0) {
-        eventTitle.labels[0].classList.remove('red')
-    }
-    else {
-        eventTitle.labels[0].classList.add('red')
-        valid = false
-    }
-
-    if (eventTag.value.length > 0) {
-        eventTag.labels[0].classList.remove('red')
-    }
-    else {
-        eventTag.labels[0].classList.add('red')
-        valid = false
-    }
 
     if (eventAthletes.value.length > 0) {
         eventAthletes.labels[0].classList.remove('red')
@@ -54,8 +36,6 @@ async function SubmitEventForm(e) {
 
         let payload = new FormData()
 
-        payload.append('title', eventTitle.value)
-        payload.append('tag', eventTag.value)
         let csv = await eventAthletes.files[0].text()
         payload.append('csv', csv)
 

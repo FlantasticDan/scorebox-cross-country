@@ -17,9 +17,9 @@ OVERLAY = Overlay()
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-@app.route('/')
+@app.route('/setup')
 def index():
-    return render_template('index.html')
+    return render_template('setup.html')
 
 @app.route('/init', methods=['POST'])
 def initialize():
