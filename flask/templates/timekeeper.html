@@ -21,8 +21,9 @@
 
             <div id="menu">
                 <button id="nav-start" class="menu-btn">Start</button>
-                <button id="nav-mile-one" class="menu-btn">Mile 1</button>
-                <button id="nav-mile-two" class="menu-btn">Mile 2</button>
+                {% for split in splits %}
+                <button id="nav-{{loop.index0}}" class="menu-btn nav-splits" data-splitindex="{{loop.index0}}" onclick="navSplitBtn(this)">{{split}}</button>
+                {% endfor %}
                 <button id="nav-finish" class="menu-btn">Finish</button>
             </div>
         </div>
@@ -37,23 +38,16 @@
 
         </div>
 
-        <div id="mile-one" class="btn-grid hide">
+        {% for split in splits %}
+        <div id="split-{{loop.index0}}" class="btn-grid hide split-grid">
             {% for runner in runners %}
-            <button disabled class="grid-btn" id="mile-one-btn-{{runner.runner_index}}" data-runnerIndex="{{runner.runner_index}}" onclick="splitMileOne(this)">
+            <button disabled class="grid-btn" id="split{{loop.index0}}-btn-{{runner.runner_index}}" data-runnerIndex="{{runner.runner_index}}" onclick="splitMileOne(this)">
                 <span class="jersey-number">{{runner.jersey}}</span><br>
-                <span class="runner-clock" id="mile-one-clock-{{runner.runner_index}}">0:00</span>
+                <span class="runner-clock" id="split{{loop.index0}}-clock-{{runner.runner_index}}">0:00</span>
             </button>
             {% endfor %}
         </div>
-
-        <div id="mile-two" class="btn-grid hide">
-            {% for runner in runners %}
-            <button disabled class="grid-btn" id="mile-two-btn-{{runner.runner_index}}" data-runnerIndex="{{runner.runner_index}}"  onclick="splitMileTwo(this)">
-                <span class="jersey-number">{{runner.jersey}}</span><br>
-                <span class="runner-clock" id="mile-two-clock-{{runner.runner_index}}">0:00</span>
-            </button>
-            {% endfor %}
-        </div>
+        {% endfor %}
 
         <div id="finish" class="btn-grid hide">
             {% for runner in runners %}

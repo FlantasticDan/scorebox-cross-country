@@ -33,7 +33,7 @@ def initialize():
 @app.route('/timekeeper')
 def timekeeper():
     global MANAGER
-    return render_template('timekeeper.html', runners=MANAGER.runners)
+    return render_template('timekeeper.html', runners=MANAGER.runners, splits=MANAGER.split_labels)
 
 @socketio.on('event-request')
 def update_client(data):
