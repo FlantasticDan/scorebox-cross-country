@@ -138,7 +138,7 @@ class CrossCountryManager:
         export = {'mode': 'placement'}
         if self.finish:
             placements = self.finish
-            export.update({'heading': 'Finish - All Times Unoffical'})
+            export.update({'heading': 'Finish'})
         else:
             placements = None
             for i in range(1, len(self.splits) + 1):
@@ -148,7 +148,7 @@ class CrossCountryManager:
                     break
             if not placements:
                 return
-        max_entries = 13
+        max_entries = 12
         placements = placements[:5] + placements[5:][(-1 * (max_entries - 5)):]
         for i in range(max_entries):
             if i <= len(placements) - 1:
