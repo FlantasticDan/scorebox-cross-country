@@ -110,23 +110,30 @@ function timerTick() {
         clock.innerText = formatTime(reference - window.eventObject.start)
 
         window.eventObject.runners.forEach(runner => {
-            if (runner.mile_one == 0 && runner.mile_two == 0) {
-                document.getElementById(`mile-one-clock-${runner.runner_index}`).innerText = formatTime(reference - runner.start)
-            }
-            else {
-                document.getElementById(`mile-one-clock-${runner.runner_index}`).innerText = formatTime(runner.mile_one - runner.start)
-                if (runner.mile_two == 0 && runner.finish == 0) {
-                    document.getElementById(`mile-two-clock-${runner.runner_index}`).innerText = formatTime(reference - runner.mile_one)
-                }
-                else {
-                    document.getElementById(`mile-two-clock-${runner.runner_index}`).innerText = formatTime(runner.mile_two - runner.mile_one)
-                    if (runner.finish == 0) {
-                        document.getElementById(`finish-clock-${runner.runner_index}`).innerText = formatTime(reference - runner.mile_two)
+            const suffix = `-clock-${runner.runner_index}`
+            if (runner.start > 0) {
+                document.getElementById(`finish${suffix}`).innerText = formatTime(reference - runner.start)
+
+                for (let i = 0; i < runner.splits.length; i++) {
+                    if (runner.splits[i] == 0){
+                        if (i == 0) {
+                            document.getElementById(`split-${i}${suffix}`).innerText = formatTime(reference - runner.start)
+                        }
+                        else {
+                            document.getElementById(`split-${i}${suffix}`).innerText = formatTime(reference - runner.splits[i - 1])
+                        }
+                        break
                     }
-                    else{
-                        document.getElementById(`finish-clock-${runner.runner_index}`).innerText = formatTime(runner.finish - runner.start)
+                    else {
+                        if (i == 0) {
+                            document.getElementById(`split-${i}${suffix}`).innerText = formatTime(runner.splits[0] - runner.start)
+                        }
+                        else {
+                            document.getElementById(`split-${i}${suffix}`).innerText = formatTime(runner.splits[i] - runner.splits[i - 1])
+                        }
                     }
                 }
+
             }
         })
 
