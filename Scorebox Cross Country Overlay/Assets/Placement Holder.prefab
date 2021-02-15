@@ -84,7 +84,6 @@ GameObject:
   - component: {fileID: 6561650387183488378}
   - component: {fileID: 6561650387183488373}
   - component: {fileID: 6561650387183488372}
-  - component: {fileID: 6561650387183488379}
   m_Layer: 5
   m_Name: Placement
   m_TagString: Untagged
@@ -151,26 +150,6 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
---- !u!114 &6561650387183488379
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6561650387183488377}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02538785c4ce4524cb88f9095970a806, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  socket: {fileID: 0}
-  placementId: 0
-  conatiner: {fileID: 0}
-  placement: {fileID: 0}
-  team: {fileID: 0}
-  jersey: {fileID: 0}
-  runnerName: {fileID: 0}
-  timeDisplay: {fileID: 0}
 --- !u!1 &6561650387238027602
 GameObject:
   m_ObjectHideFlags: 0
