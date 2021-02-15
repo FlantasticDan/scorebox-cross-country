@@ -25,6 +25,21 @@ body{
     height: 100vh;
 }
 
+h1, h2{
+    font-family: 'Source Sans Pro';
+    text-align: center;
+    margin: 0.05em;
+}
+
+h1{
+    font-weight: 600;
+}
+
+h2{
+    letter-spacing: 0.2em;
+    font-weight: 300;
+}
+
 #build-tag{
     font-family: 'Source Code Pro';
     color: white;
@@ -199,6 +214,16 @@ button.btn:disabled, button.btn:disabled:hover{
     box-sizing: border-box;
 }
 
+#opener{
+    padding: 1em;
+}
+
+#opener p {
+    line-height: 1.4em;
+    font-weight: 300;
+    max-width: 640px;
+}
+
 #clock{
     border: 8px solid var(--blue-primary);
     font-size: 4em;
@@ -210,9 +235,14 @@ button.btn:disabled, button.btn:disabled:hover{
     background: var(--blue-dark);
 }
 
+#clock.disconnected{
+    border-color: var(--red-primary);
+    background-color: var(--red-dark);
+}
+
 #menu{
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
     padding-top: 1em;
 }
 
@@ -250,12 +280,20 @@ button.grid-btn{
     border: 0px solid;
     outline: 0px;
     cursor: pointer;
+    place-items: center;
+    display: grid;
+    grid-template-rows: 1fr auto auto;
+    height: 132px;
 }
 
 button.grid-btn:disabled{
     color: var(--mid-grey);
     background-color: var(--less-dark-grey);
     cursor: not-allowed;
+}
+
+button.grid-btn .runner-name{
+    /* height: 36px; */
 }
 
 button.grid-btn .jersey-number{
@@ -270,4 +308,11 @@ button.grid-btn .runner-clock{
 
 .hide{
     display: none;
+}
+
+.logo-opacity{
+    opacity: 0.5;
+    margin: auto;
+    padding: 4em 1em 1em;
+    display: block;
 }

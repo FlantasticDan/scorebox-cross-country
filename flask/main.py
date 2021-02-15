@@ -2,7 +2,6 @@ import webbrowser
 from threading import Thread
 
 from eventlet.green import socket
-# from eventlet.green import threading
 from eventlet.green import asyncore
 from flask import Flask, render_template, request
 from flask_socketio import SocketIO, emit
@@ -33,7 +32,7 @@ def initialize():
 @app.route('/timekeeper')
 def timekeeper():
     global MANAGER
-    return render_template('timekeeper.html', runners=MANAGER.runners, splits=MANAGER.split_labels)
+    return render_template('timekeeper.html', runners=MANAGER.runners, splits=MANAGER.split_labels, title=MANAGER.title, tag=MANAGER.tag)
 
 @socketio.on('event-request')
 def update_client(data):
@@ -52,7 +51,7 @@ def start_event(json):
     return emit('event-reset', MANAGER.get_event_object(), broadcast=True)
 
 @socketio.on('split')
-def split_mile_one(json):
+def split_runner(json):
     global MANAGER
     MANAGER.split(json['split'], json['runner'], json['timestamp'])
     OVERLAY.push_json(MANAGER.export_placements())

@@ -5,6 +5,9 @@ const navFinish = document.getElementById('nav-finish')
 const start = document.getElementById('start')
 const splitGrids = document.getElementsByClassName('split-grid')
 const finish = document.getElementById('finish')
+const opener = document.getElementById('opener')
+
+const clockHeader = document.getElementById('clock')
 
 function resetNav() {
     navStart.classList.remove('checked')
@@ -14,6 +17,8 @@ function resetNav() {
     start.classList.add('hide')
     Array.from(splitGrids).forEach(splitGrid => splitGrid.classList.add('hide'))
     finish.classList.add('hide')
+
+    opener.classList.add('hide')
 }
 
 navStart.onclick = () => {
@@ -32,6 +37,16 @@ function navSplitBtn(btn) {
     resetNav()
     btn.classList.add('checked')
     splitGrids[parseInt(btn.dataset.splitindex)].classList.remove('hide')
+}
+
+clockHeader.onclick = () => {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
 }
 
 // Huge shout out to Jake Archibald for this work of brilliance
@@ -112,7 +127,6 @@ function timerTick() {
         window.eventObject.runners.forEach(runner => {
             const suffix = `-clock-${runner.runner_index}`
             if (runner.start > 0) {
-                document.getElementById(`finish${suffix}`).innerText = formatTime(reference - runner.start)
 
                 for (let i = 0; i < runner.splits.length; i++) {
                     if (runner.splits[i] == 0){
@@ -134,6 +148,14 @@ function timerTick() {
                     }
                 }
 
+                if (runner.finish == 0){
+                    document.getElementById(`finish${suffix}`).innerText = formatTime(reference - runner.start)
+                }
+                else {
+                    document.getElementById(`finish${suffix}`).innerText = formatTime(runner.finish - runner.start)
+                }
+                
+
             }
         })
 
@@ -150,8 +172,13 @@ socket.on('connect', () => {
     socket.emit('event-request', 'update')
 })
 
+socket.on('disconnect', () => {
+    clockHeader.classList.add('disconnected')
+})
+
 socket.on('event-reset', payload => {
     window.eventObject = payload
+    clockHeader.classList.remove('disconnected')
     updateEvent()
 })
 

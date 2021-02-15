@@ -15,7 +15,7 @@
     <body>
 
         <div class="header">
-            <div id="clock">
+            <div id="clock" class="disconnected">
                 0:00
             </div>
 
@@ -26,6 +26,22 @@
                 {% endfor %}
                 <button id="nav-finish" class="menu-btn">Finish</button>
             </div>
+        </div>
+
+        <div id="opener">
+            <h1>{{title}}</h1>
+            <h2>{{tag}}</h2>
+            <p>
+                Use the tabs across the top to select which split you are currently timekeeping. 
+                With the exception of the finish, you cannot split a runner unless they have already been timed at all preceeding splits.
+                There is <b>NO WAY</b> to undo a split, make sure you are splitting the right runner at the right time. 
+                Time are recorded when you tap the button, so it may make sense to position yourself a bit ahead of the split line to track runners in advance of the line.
+                <br><br>
+                The race clock at the top will turn red in the event your device looses it's realtime connection to the server.  
+                Your device will attempt to reconnect automatically, and the clock will turn blue when successful.
+                <br><br>
+                <em>PRO TIP:</em> Tapping the clock will toggle running the timekeeper fullscreen.
+            </p>
         </div>
 
         <div id="start" class="hide">
@@ -43,7 +59,8 @@
         <div id="split-{{loop.index0}}" class="btn-grid hide split-grid">
             {% for runner in runners %}
             <button disabled class="grid-btn" id="split-{{split_loop.index0}}-btn-{{runner.runner_index}}" data-runnerIndex="{{runner.runner_index}}" data-splitindex="{{split_loop.index0}}" onclick="splitRunner(this)">
-                <span class="jersey-number">{{runner.jersey}}</span><br>
+                <span class="runner-name">{{runner.name}}</span>
+                <span class="jersey-number">{{runner.jersey}}</span>
                 <span class="runner-clock" id="split-{{split_loop.index0}}-clock-{{runner.runner_index}}">0:00</span>
             </button>
             {% endfor %}
@@ -53,11 +70,14 @@
         <div id="finish" class="btn-grid hide">
             {% for runner in runners %}
             <button disabled class="grid-btn" id="finish-btn-{{runner.runner_index}}" data-runnerIndex="{{runner.runner_index}}" onclick="finishRunner(this)">
-                <span class="jersey-number">{{runner.jersey}}</span><br>
+                <span class="runner-name">{{runner.name}}</span>
+                <span class="jersey-number">{{runner.jersey}}</span>
                 <span class="runner-clock" id="finish-clock-{{runner.runner_index}}">0:00</span>
             </button>
             {% endfor %}
         </div>
+
+        <img src="/static/img/logo-white.png" width="100px" class="logo-opacity">
 
         <script src="/static/third-party/socket.io.min.js"></script>
         <script src="/static/timekeeper.js"></script>
