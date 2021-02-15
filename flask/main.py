@@ -51,17 +51,10 @@ def start_event(json):
         OVERLAY.start_clock(MANAGER.start)
     return emit('event-reset', MANAGER.get_event_object(), broadcast=True)
 
-@socketio.on('mile-one')
+@socketio.on('split')
 def split_mile_one(json):
     global MANAGER
-    MANAGER.split_mile_one(json['runner'], json['timestamp'])
-    OVERLAY.push_json(MANAGER.export_placements())
-    return emit('runner-update', MANAGER.runners[json['runner']], broadcast=True)
-
-@socketio.on('mile-two')
-def split_mile_two(json):
-    global MANAGER
-    MANAGER.split_mile_two(json['runner'], json['timestamp'])
+    MANAGER.split(json['split'], json['runner'], json['timestamp'])
     OVERLAY.push_json(MANAGER.export_placements())
     return emit('runner-update', MANAGER.runners[json['runner']], broadcast=True)
 

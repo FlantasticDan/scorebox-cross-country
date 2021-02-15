@@ -59,21 +59,31 @@ function animationInterval(ms, signal, callback) {
 window.eventObject = undefined
 
 function updateRunner(runner) {
-     const runnerMileOne = document.getElementById(`mile-one-btn-${runner.runner_index}`)
-     const runnerMileTwo = document.getElementById(`mile-two-btn-${runner.runner_index}`)
-     const runnerFinish = document.getElementById(`finish-btn-${runner.runner_index}`)
+    const suffix = `-btn-${runner.runner_index}`
+    let btns = []
+
+    for (let i = 0; i < runner.splits.length; i++) {
+        btns.push(document.getElementById(`split-${i}${suffix}`))
+        btns[i].disabled = true
+    }
+
+    const runnerFinish = document.getElementById(`finish-btn-${runner.runner_index}`)
 
     if (runner.start > 0) {
-        runnerMileOne.disabled = false
-    }
-    if (runner.mile_one > 0) {
-        runnerMileOne.disabled = true
-        runnerMileTwo.disabled = false
-    }
-    if (runner.mile_two > 0) {
-        runnerMileTwo.disabled = true
         runnerFinish.disabled = false
+        if (runner.splits[0] == 0) {
+            btns[0].disabled = false
+        }
     }
+    
+    for (let i = 1; i <= runner.splits.length; i++) {
+        if (runner.splits[i] == 0 && runner.splits[i - 1] > 0) {
+            btns[i].disabled = false
+            btns[i-1].disabled = true
+            break
+        }
+    }
+
     if (runner.finish > 0){
         runnerFinish.disabled = true
     }
@@ -146,19 +156,12 @@ function startEvent(){
 
 startBtn.onclick = startEvent
 
-function splitMileOne(btn) {
+function splitRunner(btn) {
     btn.disabled = true
-    socket.emit('mile-one', {
+    socket.emit('split', {
         runner: parseInt(btn.dataset.runnerindex),
-        timestamp: Date.now()
-    })
-}
-
-function splitMileTwo(btn) {
-    btn.disabled = true
-    socket.emit('mile-two', {
-        runner: parseInt(btn.dataset.runnerindex),
-        timestamp: Date.now()
+        timestamp: Date.now(),
+        split: parseInt(btn.dataset.splitindex)
     })
 }
 

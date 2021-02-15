@@ -39,11 +39,12 @@
         </div>
 
         {% for split in splits %}
+        {% set split_loop = loop %}
         <div id="split-{{loop.index0}}" class="btn-grid hide split-grid">
             {% for runner in runners %}
-            <button disabled class="grid-btn" id="split{{loop.index0}}-btn-{{runner.runner_index}}" data-runnerIndex="{{runner.runner_index}}" onclick="splitMileOne(this)">
+            <button disabled class="grid-btn" id="split-{{split_loop.index0}}-btn-{{runner.runner_index}}" data-runnerIndex="{{runner.runner_index}}" data-splitindex="{{split_loop.index0}}" onclick="splitRunner(this)">
                 <span class="jersey-number">{{runner.jersey}}</span><br>
-                <span class="runner-clock" id="split{{loop.index0}}-clock-{{runner.runner_index}}">0:00</span>
+                <span class="runner-clock" id="split-{{split_loop.index0}}-clock-{{runner.runner_index}}">0:00</span>
             </button>
             {% endfor %}
         </div>

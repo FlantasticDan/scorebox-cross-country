@@ -32,7 +32,7 @@ def process_csv(csv_string: str):
             'name': fields[2],
             'team': fields[1],
             'start': 0,
-            'splits': split_template,
+            'splits': split_template.copy(),
             'finish': 0
         }
         runners.append(runner)
@@ -55,8 +55,7 @@ class CrossCountryManager:
 
         self.start = 0
 
-        self.mile_one = None
-        self.mile_two = None
+        self.splits = len(self.split_labels) * [None]
         self.finish = None
 
     def start_event(self, timestamp):
@@ -64,46 +63,66 @@ class CrossCountryManager:
         for i in range(len(self.runners)):
             self.runners[i]['start'] = timestamp
     
-    def split_mile_one(self, runner_index: int, timestamp):
-        self.runners[runner_index]['mile_one'] = timestamp
-        self.mile_one = self.get_results('mile_one')
-    
-    def split_mile_two(self, runner_index: int, timestamp):
-        self.runners[runner_index]['mile_two'] = timestamp
-        self.mile_two = self.get_results('mile_two')
+    def split(self, split_index: int, runner_index: int, timestamp):
+        self.runners[runner_index]['splits'][split_index] = timestamp
+        self.splits[split_index] = self.get_results(split_index)
     
     def finish_runner(self, runner_index: int, timestamp):
         self.runners[runner_index]['finish'] = timestamp
-        self.finish = self.get_results('finish')
+        self.finish = self.get_finish_results()
 
-    def get_results(self, key: str):
+    def get_results(self, key: int):
         candidates = []
         for runner in self.runners:
-            if runner[key] > 0:
+            if runner['splits'][key] > 0:
                 placement = {
                     'name': runner['name'],
                     'jersey': runner['jersey'],
                     'team': runner['team'],
-                    'raw_split': runner[key] - runner['start'],
+                    'raw_split': runner['splits'][key] - runner['start'],
                 }
                 candidates.append(placement)
         
         placements = sorted(candidates, key=itemgetter('raw_split'))
 
-        return self.format_placements(placements, key)
+        return self.format_placements(placements)
 
-    def format_placements(self, placements, key: str):
+    def get_finish_results(self):
+        candidates = []
+        for runner in self.runners:
+            if runner['finish'] > 0:
+                placement = {
+                    'name': runner['name'],
+                    'jersey': runner['jersey'],
+                    'team': runner['team'],
+                    'raw_split': runner['finish'] - runner['start'],
+                }
+                candidates.append(placement)
+        
+        placements = sorted(candidates, key=itemgetter('raw_split'))
+
+        return self.format_finish_placements(placements)
+
+    def format_placements(self, placements):
         formatted = []
         leader = None
         for i, runner in enumerate(placements):
             placement = runner
             if i == 0:
                 leader = runner['raw_split']
-            if key == 'finish' or i == 0:
                 placement['display'] = format_time(runner['raw_split'])
             else:
                 placement['display'] = "+" + format_time(runner['raw_split'] - leader)
 
+            formatted.append(placement)
+        
+        return formatted
+    
+    def format_finish_placements(self, placements):
+        formatted = []
+        for runner in placements:
+            placement = runner
+            placement['display'] = format_time(runner['raw_split'])
             formatted.append(placement)
         
         return formatted
@@ -120,14 +139,15 @@ class CrossCountryManager:
         if self.finish:
             placements = self.finish
             export.update({'heading': 'Finish - All Times Unoffical'})
-        elif self.mile_two:
-            placements = self.mile_two
-            export.update({'heading': 'Mile 2 Split - All Times Unoffical'})
-        elif self.mile_one:
-            placements = self.mile_one
-            export.update({'heading': 'Mile 1 Split - All Times Unoffical'})
         else:
-            return
+            placements = None
+            for i in range(1, len(self.splits) + 1):
+                if self.splits[-1 * i]:
+                    placements =  self.splits[-1 * i]
+                    export.update({'heading': self.split_labels[-1 * i]})
+                    break
+            if not placements:
+                return
         max_entries = 13
         placements = placements[:5] + placements[5:][(-1 * (max_entries - 5)):]
         for i in range(max_entries):
