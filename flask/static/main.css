@@ -206,6 +206,39 @@ button.btn:disabled, button.btn:disabled:hover{
     cursor: not-allowed;
 }
 
+button.toggle{
+    font-family: 'Source Sans Pro';
+    font-weight: 600;
+    font-size: 1.25em;
+    color: var(--light-grey);
+    background: transparent;
+    border: 2px solid var(--light-grey);
+    padding: .15em .5em;
+    outline: 0px;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+button.toggle.toggled{
+    background-color: var(--light-grey);
+    color: var(--dark-grey);
+    cursor: pointer;
+}
+
+.toggle-container{
+    display: grid;
+    grid-template-columns: 1fr repeat(2, auto);
+    place-items: center;
+    width: 100%;
+    padding: 0.75em;
+    background: #42424263;
+    box-sizing: border-box;
+}
+
+.toggle-prompt{
+    margin: auto auto auto 0;
+}
+
 .header{
     margin: auto;
     padding: 1em;
@@ -324,10 +357,6 @@ button.grid-btn:disabled{
     cursor: not-allowed;
 }
 
-button.grid-btn .runner-name{
-    /* height: 36px; */
-}
-
 button.grid-btn .jersey-number{
     font-size: 3em;
     font-weight: 800;
@@ -347,4 +376,45 @@ button.grid-btn .runner-clock{
     margin: auto;
     padding: 4em 1em 1em;
     display: block;
+}
+
+#header-chrome{
+    display: grid;
+    place-items: center;
+    grid-template-columns: auto auto auto auto 1fr auto auto;
+    gap: 1em;
+    padding: 1em;
+    background-color: var(--less-dark-grey);
+}
+
+.dash-contents{
+    padding: 1em;
+}
+
+.dash-contents h3{
+    margin: 0 0 .25em;
+    font-size: 2.25em;
+}
+
+#clock-settings{
+    display: grid;
+    place-items: center;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+#clock-container{
+    display: grid;
+    place-items: center;
+}
+
+#clock-container #clock{
+    font-size: 3em;
+    border-width: 4px;
+    padding: 0 0.2em;
+}
+
+#clock-container h4{
+    font-size: 1.25em;
+    margin: 0;
+    font-weight: 200;
 }

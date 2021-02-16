@@ -13,12 +13,14 @@ from manager import CrossCountryManager
 MANAGER = None
 OVERLAY = Overlay()
 
+VERSION = 'v. 0.2 (02152021)'
+
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 @app.route('/setup')
 def index():
-    return render_template('setup.html')
+    return render_template('setup.html', version=VERSION)
 
 @app.route('/init', methods=['POST'])
 def initialize():
@@ -33,6 +35,11 @@ def initialize():
 def timekeeper():
     global MANAGER
     return render_template('timekeeper.html', runners=MANAGER.runners, splits=MANAGER.split_labels, title=MANAGER.title, tag=MANAGER.tag)
+
+@app.route('/admin')
+def admin():
+    global MANAGER
+    return render_template('admin.html', version=VERSION)
 
 @socketio.on('event-request')
 def update_client(data):

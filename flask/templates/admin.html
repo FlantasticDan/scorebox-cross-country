@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+
+        <title>ScoreBox Cross Country</title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="/static/main.css">
+
+    </head>
+
+    <body>
+
+        <div id="build-tag">
+            {{version}}
+        </div>
+
+        <div id="header-chrome">
+            <img src="/static/img/logo-white.png" height="50px">
+            <h1>Event Title</h1>
+            <img src="/static/img/runner-icon.svg" height="25px">
+            <h2>Event Tag</h2>
+            <div></div>
+            <button class="btn">Export Splits</button>
+            <button class="btn red">New Race</button>
+        </div>
+
+        <div id="clock-dashboard" class="dash-contents">
+            <h3>Timekeeping</h3>
+            <p>
+                Settings and status for timekeeping operations, primarily focused on the main race clock.  
+                Starting the clock from this dashboard has the same effect as if it were started from a remote timekeeper.  
+                Remote timekeepers can be any networked device with a web browser navigated to /timekeeper.
+            </p>
+            <div id="clock-settings">
+                <div id="clock-container">
+                    <div id="clock">
+                        24:57
+                    </div>
+                </div>
+
+                <button class="btn green">
+                    Start Race
+                </button>
+
+                <div class="toggle-container">
+                    <div class="toggle-prompt">
+                        Clock Visible
+                    </div>
+                    <button class="toggle">No</button>
+                    <button class="toggle toggled">Yes</button>
+                </div>
+            </div>
+        </div>
+        
+
+        <!-- <script src="/static/admin.js"></script> -->
+    </body>
+
+</html>
