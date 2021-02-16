@@ -286,6 +286,38 @@ button.grid-btn{
     height: 132px;
 }
 
+button.grid-btn.red{
+    background-color: #CC0000;
+}
+
+button.grid-btn.orange{
+    background-color: #CC6E00;
+}
+
+button.grid-btn.yellow{
+    background-color: #C8C81A;
+}
+
+button.grid-btn.green{
+    background-color: #09CF64;
+}
+
+button.grid-btn.blue{
+    background-color: #097ACF;
+}
+
+button.grid-btn.purple{
+    background-color: #9309CF;
+}
+
+button.grid-btn.gold{
+    background-color: #B79835;
+}
+
+button.grid-btn.silver{
+    background-color: #A6A6A6;
+}
+
 button.grid-btn:disabled{
     color: var(--mid-grey);
     background-color: var(--less-dark-grey);

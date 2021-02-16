@@ -351,6 +351,7 @@ GameObject:
   - component: {fileID: 642837778377738933}
   - component: {fileID: 642837778377738939}
   - component: {fileID: 642837778377738932}
+  - component: {fileID: 6747876869442840597}
   m_Layer: 5
   m_Name: Team Color BG
   m_TagString: Untagged
@@ -398,7 +399,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6698113, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0.36204123, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -412,6 +413,26 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!114 &6747876869442840597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 642837778377738934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3225717a8833d84eaafa8e433334889, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  red: {r: 0.8, g: 0, b: 0, a: 1}
+  orange: {r: 0.8, g: 0.43137255, b: 0, a: 1}
+  yellow: {r: 0.78431374, g: 0.78431374, b: 0.101960786, a: 1}
+  green: {r: 0.03529412, g: 0.8117647, b: 0.39215687, a: 1}
+  blue: {r: 0.03529412, g: 0.47843137, b: 0.8117647, a: 1}
+  purple: {r: 0.5764706, g: 0.03529412, b: 0.8117647, a: 1}
+  gold: {r: 0.7176471, g: 0.59607846, b: 0.20784314, a: 1}
+  silver: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
 --- !u!1 &642837778419679742
 GameObject:
   m_ObjectHideFlags: 0
@@ -1017,6 +1038,8 @@ MonoBehaviour:
   conatiner: {fileID: 642837778786982156}
   placement: {fileID: 642837778932290099}
   team: {fileID: 642837779043019736}
+  teamBG: {fileID: 642837778377738932}
   jersey: {fileID: 642837778783208675}
   runnerName: {fileID: 642837778097584633}
   timeDisplay: {fileID: 2647886285567844878}
+  colors: {fileID: 6747876869442840597}

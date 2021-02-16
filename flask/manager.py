@@ -2,6 +2,17 @@
 import time
 from operator import itemgetter
 
+# COLORS = {
+#     'red': 'CC0000',
+#     'orange': 'CC6E00',
+#     'yellow': 'C8C81A',
+#     'green': '09CF64',
+#     'blue': '097ACF',
+#     'purple': '9309CF',
+#     'gold': 'B79835',
+#     'silver': 'A6A6A6'
+# }
+
 def process_csv(csv_string: str):
     runners = []
     lines = csv_string.split('\r\n')
@@ -31,6 +42,7 @@ def process_csv(csv_string: str):
             'jersey': fields[0],
             'name': fields[2],
             'team': fields[1],
+            'color': team_colors[fields[1]],
             'start': 0,
             'splits': split_template.copy(),
             'finish': 0
@@ -79,6 +91,7 @@ class CrossCountryManager:
                     'name': runner['name'],
                     'jersey': runner['jersey'],
                     'team': runner['team'],
+                    'color': runner['color'],
                     'raw_split': runner['splits'][key] - runner['start'],
                 }
                 candidates.append(placement)
@@ -95,6 +108,7 @@ class CrossCountryManager:
                     'name': runner['name'],
                     'jersey': runner['jersey'],
                     'team': runner['team'],
+                    'color': runner['color'],
                     'raw_split': runner['finish'] - runner['start'],
                 }
                 candidates.append(placement)
@@ -108,6 +122,7 @@ class CrossCountryManager:
         leader = None
         for i, runner in enumerate(placements):
             placement = runner
+            placement['place'] = i + 1
             if i == 0:
                 leader = runner['raw_split']
                 placement['display'] = format_time(runner['raw_split'])
@@ -120,8 +135,9 @@ class CrossCountryManager:
     
     def format_finish_placements(self, placements):
         formatted = []
-        for runner in placements:
+        for i, runner in enumerate(placements):
             placement = runner
+            placement['place'] = i + 1
             placement['display'] = format_time(runner['raw_split'])
             formatted.append(placement)
         
@@ -153,8 +169,9 @@ class CrossCountryManager:
         for i in range(max_entries):
             if i <= len(placements) - 1:
                 runner = {
-                    f'{i}place': i + 1,
+                    f'{i}place': placements[i]['place'],
                     f'{i}team':placements[i]['team'],
+                    f'{i}color':placements[i]['color'],
                     f'{i}jersey':placements[i]['jersey'],
                     f'{i}name':placements[i]['name'],
                     f'{i}display':placements[i]['display']

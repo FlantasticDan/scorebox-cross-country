@@ -65,6 +65,7 @@ public class SocketConnection : MonoBehaviour
             placementkeeper.Add(j + "jersey", "0");
             placementkeeper.Add(j + "name", "0");
             placementkeeper.Add(j + "display", "0");
+            placementkeeper.Add(j + "color", "0");
         }
 
         placementkeeper.Add("header", "0");
@@ -82,6 +83,7 @@ public class SocketConnection : MonoBehaviour
                 placementkeeper[j + "jersey"] = payload[j + "jersey"];
                 placementkeeper[j + "name"] = payload[j + "name"];
                 placementkeeper[j + "display"] = payload[j + "display"];
+                placementkeeper[j + "color"] = payload[j + "color"];
             }
         };
     }
