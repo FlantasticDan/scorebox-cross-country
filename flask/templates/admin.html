@@ -33,16 +33,17 @@
             <p>
                 Settings and status for timekeeping operations, primarily focused on the main race clock.  
                 Starting the clock from this dashboard has the same effect as if it were started from a remote timekeeper.  
-                Remote timekeepers can be any networked device with a web browser navigated to /timekeeper.
+                Remote timekeepers can be any networked device with a web browser navigated to /timekeeper.  
+                The clock will turn red if the realtime data connection is interrupted
             </p>
             <div id="clock-settings">
                 <div id="clock-container">
                     <div id="clock">
-                        24:57
+                        0:00
                     </div>
                 </div>
 
-                <button class="btn green">
+                <button class="btn green" id="start-btn">
                     Start Race
                 </button>
 
@@ -115,8 +116,8 @@
             </table>
         </div>
         
-
-        <!-- <script src="/static/admin.js"></script> -->
+        <script src="/static/third-party/socket.io.min.js"></script>
+        <script src="/static/admin.js"></script>
     </body>
 
 </html>

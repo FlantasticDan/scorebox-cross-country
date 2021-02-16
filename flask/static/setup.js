@@ -45,7 +45,7 @@ async function SubmitEventForm(e) {
             body: payload
         }).then(res => {
             console.log(res)
-            window.location.href = '/timekeeper'
+            window.location.href = '/admin'
         })
 
     }
