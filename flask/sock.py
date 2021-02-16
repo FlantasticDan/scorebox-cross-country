@@ -15,7 +15,7 @@ def format_time(milliseconds):
 
 class Overlay:
 
-    def __init__(self):
+    def __init__(self, title, tag):
         self.websock_server = websock.WebSocketServer('127.0.0.1', port=5500, on_connection_open=self.connection_handler)
 
         self.thread = Thread(target=self.runner)
@@ -24,10 +24,6 @@ class Overlay:
         self.race_start = 0
         self.clock_thread = Thread(target=self.clock_pulse)
 
-        self.title = "Event Title"
-        self.tag = "Event Tag"
-    
-    def set_title_tag(self, title, tag):
         self.title = title
         self.tag = tag
 

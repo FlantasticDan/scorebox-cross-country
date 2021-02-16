@@ -4,6 +4,8 @@ import csv
 from io import StringIO
 from operator import itemgetter
 
+from sock import Overlay
+
 # COLORS = {
 #     'red': 'CC0000',
 #     'orange': 'CC6E00',
@@ -66,6 +68,7 @@ class CrossCountryManager:
     
     def __init__(self, csv):
         self.title, self.tag, self.split_labels, self.team_colors, self.runners = process_csv(csv)
+        self.overlay = Overlay(self.title, self.tag)
 
         self.start = 0
 
@@ -74,16 +77,21 @@ class CrossCountryManager:
 
     def start_event(self, timestamp):
         self.start = timestamp
+        self.overlay.start_clock(self.start)
         for i in range(len(self.runners)):
             self.runners[i]['start'] = timestamp
     
     def split(self, split_index: int, runner_index: int, timestamp):
         self.runners[runner_index]['splits'][split_index] = timestamp
         self.splits[split_index] = self.get_results(split_index)
+
+        self.overlay.push_json(self.export_placements())
     
     def finish_runner(self, runner_index: int, timestamp):
         self.runners[runner_index]['finish'] = timestamp
         self.finish = self.get_finish_results()
+
+        self.overlay.push_json(self.export_placements())
 
     def get_results(self, key: int):
         candidates = []
