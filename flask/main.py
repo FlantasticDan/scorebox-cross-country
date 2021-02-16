@@ -41,6 +41,12 @@ def admin():
     global MANAGER
     return render_template('admin.html', version=VERSION, runners=MANAGER.runners, splits=MANAGER.split_labels, title=MANAGER.title, tag=MANAGER.tag)
 
+@app.route('/export')
+def export_csv():
+    global MANAGER
+    return MANAGER.get_csv_export_string()
+
+
 @socketio.on('event-request')
 def update_client(data):
     global MANAGER

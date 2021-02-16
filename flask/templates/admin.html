@@ -24,7 +24,7 @@
             <img src="/static/img/runner-icon.svg" height="25px">
             <h2>{{tag}}</h2>
             <div></div>
-            <button class="btn">Export Splits</button>
+            <button class="btn" id="export-btn">Export Splits</button>
             <!-- <button class="btn red">New Race</button> -->
         </div>
 
@@ -34,7 +34,7 @@
                 Settings and status for timekeeping operations, primarily focused on the main race clock.  
                 Starting the clock from this dashboard has the same effect as if it were started from a remote timekeeper.  
                 Remote timekeepers can be any networked device with a web browser navigated to /timekeeper.  
-                The clock will turn red if the realtime data connection is interrupted
+                The clock will turn red if the realtime data connection is interrupted.
             </p>
             <div id="clock-settings">
                 <div id="clock-container">

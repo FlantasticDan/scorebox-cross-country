@@ -132,3 +132,23 @@ function startEvent(){
 }
 
 startBtn.onclick = startEvent
+
+const exportBtn = document.getElementById('export-btn')
+
+exportBtn.onclick = exportCSV
+
+async function exportCSV() {
+    fetch('/export').then(res => {
+        return res.text()
+    }).then(text => {writeExportCSV(text)})
+}
+
+async function writeExportCSV(text) {
+    handle = await window.showSaveFilePicker({
+        excludeAcceptAllOption: true,
+        types: [{accept: {'text/csv': ['.csv']}}]
+    })
+    writeable = await handle.createWritable()
+    await writeable.write(text)
+    await writeable.close()
+}

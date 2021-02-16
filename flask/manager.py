@@ -1,5 +1,7 @@
 '''ScoreBox Cross Country Manager'''
 import time
+import csv
+from io import StringIO
 from operator import itemgetter
 
 # COLORS = {
@@ -180,3 +182,47 @@ class CrossCountryManager:
             else:
                 export.update({f'{i}place': 0})
         return export
+    
+    def get_csv_export_string(self):
+        staged = []
+        for runner in self.runners:
+            if runner['start'] == 0:
+                continue
+            stage = {
+                'Jersey': runner['jersey'],
+                'Team': runner['team'],
+                'Name': runner['name'],
+            }
+            for i, split in enumerate(self.split_labels):
+                if runner['splits'][i] == 0:
+                    break
+                stage[split] = format_time(runner['splits'][i] - runner['start'])
+                if i > 0:
+                    stage[f'{split} - Split'] = format_time(runner['splits'][i] - runner['splits'][i - 1])
+            
+            if runner['finish'] > 0:
+                if len(self.split_labels) > 0 and runner['splits'][-1] != 0:
+                    stage['Finish - Split'] = format_time(runner['finish'] - runner['splits'][-1])
+                stage['Finish'] = format_time(runner['finish'] - runner['start'])
+
+            staged.append(stage)
+
+        fieldnames = ['Jersey', 'Team', 'Name']
+
+        for i, split in enumerate(self.split_labels):
+            if i > 0:
+                fieldnames.append(f'{split} - Split')
+            fieldnames.append(split)
+
+        if len(self.split_labels) > 0:
+            fieldnames.append('Finish - Split')
+        fieldnames.append('Finish')
+
+        out = StringIO(newline='\n')
+        csv_out = csv.DictWriter(out, fieldnames=fieldnames)
+        csv_out.writeheader()
+        csv_out.writerows(staged)
+
+        ret = out.getvalue()
+        out.close()
+        return ret
