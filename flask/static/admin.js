@@ -152,3 +152,25 @@ async function writeExportCSV(text) {
     await writeable.write(text)
     await writeable.close()
 }
+
+function ToggleBehavior(btnA, btnB) {
+    btnA.classList.toggle('toggled')
+    btnB.classList.toggle('toggled')
+}
+
+const tClockNo = document.getElementById('toggle-clock-no')
+const tClockYes = document.getElementById('toggle-clock-yes')
+tClockNo.onclick = () => {ToggleBehavior(tClockNo, tClockYes)}
+tClockYes.onclick = () => {ToggleBehavior(tClockNo, tClockYes)}
+
+const tSplitNo = document.getElementById('toggle-splits-no')
+const tSplitYes = document.getElementById('toggle-splits-yes')
+tSplitNo.onclick = () => {ToggleBehavior(tSplitNo, tSplitYes)}
+tSplitYes.onclick = () => {ToggleBehavior(tSplitNo, tSplitYes)}
+
+const tSplitAutoNo = document.getElementById('toggle-splits-auto-no')
+const tSplitAutoYes = document.getElementById('toggle-splits-auto-yes')
+tSplitAutoNo.onclick = () => {ToggleBehavior(tSplitAutoNo, tSplitAutoYes)}
+tSplitAutoYes.onclick = () => {ToggleBehavior(tSplitAutoNo, tSplitAutoYes)}
+
+
