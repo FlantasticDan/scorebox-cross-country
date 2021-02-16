@@ -44,7 +44,7 @@ h2{
     font-family: 'Source Code Pro';
     color: white;
     font-size: 0.8em;
-    position: absolute;
+    position: fixed;
     text-align: right;
     bottom: 0px;
     right: 0px;
@@ -385,6 +385,8 @@ button.grid-btn .runner-clock{
     gap: 1em;
     padding: 1em;
     background-color: var(--less-dark-grey);
+    position: sticky;
+    top: 0px;
 }
 
 .dash-contents{
@@ -400,21 +402,57 @@ button.grid-btn .runner-clock{
     display: grid;
     place-items: center;
     grid-template-columns: repeat(3, 1fr);
+    max-width: 780px;
+    margin: auto;
 }
 
 #clock-container{
     display: grid;
     place-items: center;
+    width: 100%;
 }
 
 #clock-container #clock{
     font-size: 3em;
     border-width: 4px;
     padding: 0 0.2em;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 #clock-container h4{
     font-size: 1.25em;
     margin: 0;
     font-weight: 200;
+}
+
+#split-settings{
+    display: grid;
+    place-items: center;
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 780px;
+    margin: auto;
+    gap: 1em;
+    padding-bottom: 1em;
+}
+
+#split-dashboard table{
+    width: 100%;
+    border: 2px solid var(--mid-grey);
+    border-collapse: collapse;
+}
+
+#split-dashboard th, #split-dashboard td{
+    border: 1px solid var(--mid-grey);
+    padding: 0.25em;
+}
+
+#split-dashboard th{
+    background-color: var(--mid-grey);
+    color: var(--dark-grey);
+    font-weight: 600;
+}
+
+#split-dashboard tr:nth-child(odd) td{
+    background-color: var(--less-dark-grey);
 }

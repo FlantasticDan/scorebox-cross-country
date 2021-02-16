@@ -20,9 +20,9 @@
 
         <div id="header-chrome">
             <img src="/static/img/logo-white.png" height="50px">
-            <h1>Event Title</h1>
+            <h1>{{title}}</h1>
             <img src="/static/img/runner-icon.svg" height="25px">
-            <h2>Event Tag</h2>
+            <h2>{{tag}}</h2>
             <div></div>
             <button class="btn">Export Splits</button>
             <button class="btn red">New Race</button>
@@ -54,6 +54,65 @@
                     <button class="toggle toggled">Yes</button>
                 </div>
             </div>
+        </div>
+
+        <div id="split-dashboard" class="dash-contents">
+            <h3>
+                Splits
+            </h3>
+            <p>
+                Splits are controlled by remote timekeepers, this is a realtime display of the results.  
+                The overlay displays results from the split (or finish) farthest along in the race.  
+                A "new split" refers to a split that has just recieved data from it's first runner.  
+                For example, when the first person finishes the race, the "Finish" split is considered the new split.
+            </p>
+
+            <div id="split-settings">
+                <div class="toggle-container">
+                    <div class="toggle-prompt">
+                        Splits Visible
+                    </div>
+                    <button class="toggle">No</button>
+                    <button class="toggle toggled">Yes</button>
+                </div>
+                <div class="toggle-container">
+                    <div class="toggle-prompt">
+                        Auto Enable Visibility on New Split
+                    </div>
+                    <button class="toggle">No</button>
+                    <button class="toggle toggled">Yes</button>
+                </div>
+            </div>
+
+            <table>
+                <tr>
+                    <th>Jersey</th>
+                    <th>Team</th>
+                    <th>Name</th>
+                    {% for split in splits %}
+                    <th>Split</th>
+                    <th>{{split}}</th>
+                    {% endfor %}
+                    <th>Split</th>
+                    <th>Finish</th>
+                </tr>
+                
+                {% for runner in runners %}
+                {% set run_loop = loop %}
+                <tr>
+                    <td>{{runner.jersey}}</td>
+                    <td>{{runner.team}}</td>
+                    <td>{{runner.name}}</td>
+                    {% for split in splits %}
+                    <td id="runner{{run_loop.index0}}-split-{{loop.index0}}-split"></td>
+                    <td id="runner{{run_loop.index0}}-split-{{loop.index0}}-total"></td>
+                    {% endfor %}
+                    <td id="runner{{run_loop.index0}}-finish-split"></td>
+                    <td id="runner{{run_loop.index0}}-finish-total"></td>
+                </tr>
+                {% endfor %}
+
+            </table>
         </div>
         
 

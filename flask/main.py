@@ -39,7 +39,7 @@ def timekeeper():
 @app.route('/admin')
 def admin():
     global MANAGER
-    return render_template('admin.html', version=VERSION)
+    return render_template('admin.html', version=VERSION, runners=MANAGER.runners, splits=MANAGER.split_labels, title=MANAGER.title, tag=MANAGER.tag)
 
 @socketio.on('event-request')
 def update_client(data):
