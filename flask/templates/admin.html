@@ -116,6 +116,54 @@
             </table>
         </div>
         
+        <div id="lower-third-dashboard" class="dash-contents">
+            <h3>
+                Lower Third
+            </h3>
+            <p>
+                There are two Lower Third variants: a one liner and a title/subtitle configuation.  
+                The one liner style is automatically used when the subtitle field is left blank.  
+                Be concise in your titles, text will be squeezed to fit if it exceeds the available space.  
+                Submitting a lower third automatically enables visibility if it isn't currently visible.  
+                The clear field does not change visibility.
+            </p>
+
+            <div id="lower-third-settings">
+                <div class="lower-third-preview">
+                    <div class="lower-third-caption">Title</div>
+                    <div class="lower-third-title" id="lower-third-preview-title">Main Title</div>
+                </div>
+
+                <div class="lower-third-preview">
+                    <div class="lower-third-caption">Subtitle</div>
+                    <div class="lower-third-title" id="lower-third-preview-subtitle">Smaller Subtitle</div>
+                </div>
+
+                <div class="toggle-container">
+                    <div class="toggle-prompt">
+                        Lower Third Visible
+                    </div>
+                    <button class="toggle" id="toggle-lower-third-no">No</button>
+                    <button class="toggle toggled" id="toggle-lower-third-yes">Yes</button>
+                </div>
+
+                <div class="lower-third-input">
+                    <label for="lower-third-title-input">Title</label>
+                    <input type="text" id="lower-third-title-input">
+                </div>
+
+                <div class="lower-third-input">
+                    <label for="lower-third-subtitle-input">Subtitle</label>
+                    <input type="text" id="lower-third-subtitle-input">
+                </div>
+
+                <div class="lower-third-buttons">
+                    <button class="btn">Clear</button>
+                    <button class="btn red">Display</button>
+                </div>
+            </div>
+        </div>
+
         <script src="/static/third-party/socket.io.min.js"></script>
         <script src="/static/admin.js"></script>
     </body>

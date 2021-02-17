@@ -457,3 +457,70 @@ button.grid-btn .runner-clock{
 #split-dashboard tr:nth-child(odd) td{
     background-color: var(--less-dark-grey);
 }
+
+#lower-third-settings{
+    display: grid;
+    place-items: center;
+    grid-template-columns: repeat(2, 1fr) minmax(auto, 230px);
+    margin: auto;
+    gap: 1em;
+    padding-bottom: 1em;
+}
+
+.lower-third-preview {
+    width: 100%;
+    border: 4px solid var(--less-dark-grey);
+    padding: 0.5em;
+    box-sizing: border-box;
+}
+
+.lower-third-title {
+    font-size: 1.35em;
+    text-transform: uppercase;
+    font-family: 'Open Sans';
+    font-weight: 700;
+}
+
+.lower-third-caption {
+    letter-spacing: 0.15em;
+    color: var(--mid-grey);
+}
+
+.lower-third-input label {
+    display: block;
+    font-family: 'Source Sans Pro';
+    color: var(--mid-grey);
+    font-size: 1.15em;
+    letter-spacing: 0.15em;
+}
+
+.lower-third-input .lower-third-input {
+    width: 100%;
+    /* box-sizing: border-box; */
+    padding: 0.5em;
+}
+
+.lower-third-input input {
+    width: 100%;
+    font-size: 1.5em;
+    text-transform: uppercase;
+    font-family: 'Open Sans';
+    font-weight: 700;
+    color: white;
+    outline: 0px;
+    border: 4px solid var(--less-dark-grey);
+    padding: 0.2em;
+    box-sizing: border-box;
+    background-color: var(--less-dark-grey);
+}
+
+.lower-third-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1em;
+    margin: auto auto 0;
+}
+
+.lower-third-buttons .btn {
+    height: 2.6em;
+}
