@@ -11,6 +11,7 @@ A runner object represents all the data ScoreBox has for an individual runner.
     "jersey": int,
     "name": string,
     "team": string,
+    "heat": int,
     "start": UNIX Timestamp (milliseconds),
     "splits": [UNIX Timestamp (milliseconds)],
     "finish": UNIX Timestamp (milliseconds),

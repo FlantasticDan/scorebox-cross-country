@@ -40,21 +40,23 @@ def process_csv(csv_string: str):
         else:
             team_colors[last_team] = entry
             last_team = None
-    
+    heats = set()
     for i, line in enumerate(lines[13:]):
         fields = line.split(',')
+        heats.add(int(fields[3]))
         runner = {
             'runner_index': i,
             'jersey': fields[0],
             'name': fields[2],
             'team': fields[1],
             'color': team_colors[fields[1]],
+            'heat': int(fields[3]),
             'start': 0,
             'splits': split_template.copy(),
             'finish': 0
         }
         runners.append(runner)
-    return title, tag, split_labels, team_colors, runners
+    return title, tag, list(range(1, len(heats) + 1)), split_labels, team_colors, runners
 
 def format_time(milliseconds):
     rounded = round(milliseconds / 1000, 1)
@@ -77,7 +79,7 @@ def format_time_estimate(milliseconds):
 class CrossCountryManager:
     
     def __init__(self, csv, socketio):
-        self.title, self.tag, self.split_labels, self.team_colors, self.runners = process_csv(csv)
+        self.title, self.tag, self.heats, self.split_labels, self.team_colors, self.runners = process_csv(csv)
         self.overlay = Overlay(self.title, self.tag, self)
         self.socketio = socketio
 
@@ -101,11 +103,26 @@ class CrossCountryManager:
 
         self.newist_split = -1
 
-    def start_event(self, timestamp):
-        self.start = timestamp
-        self.overlay.start_clock(self.start)
+        self.heat_object = {
+            'started': [],
+            'next': 1,
+            'future': self.heats.copy()
+        }
+
+    def start_event(self, timestamp, heat):
+        if heat == 1:
+            self.start = timestamp
+            self.overlay.start_clock(self.start)
         for i in range(len(self.runners)):
-            self.runners[i]['start'] = timestamp
+            if self.runners[i]['heat'] == heat:
+                self.runners[i]['start'] = timestamp
+        
+        self.heat_object['started'].append(heat)
+        self.heat_object['future'].remove(heat)
+        if heat + 1 in self.heats:
+            self.heat_object['next'] = heat + 1
+        else:
+            self.heat_object['next'] = 0
     
     def update_newist_split(self, split_index):
         if self.newist_split < split_index:
@@ -193,7 +210,8 @@ class CrossCountryManager:
     def get_event_object(self):
         return {
             'start': self.start,
-            'runners': self.runners
+            'runners': self.runners,
+            'heats': self.heat_object
         }
     
     def export_placements(self):

@@ -38,7 +38,8 @@
                 Times are recorded when you tap the button, so it may make sense to position yourself a bit ahead of the split line to track runners in advance of the line.
                 <br><br>
                 The race clock at the top will turn red in the event your device looses it's realtime connection to the server.  
-                Your device will attempt to reconnect automatically, and the clock will turn blue when successful.
+                Your device will attempt to reconnect automatically, and the clock will turn blue when successful.  
+                Any splits you mark while disconnected will not count.
                 <br><br>
                 <em>PRO TIP:</em> Tapping the clock will toggle running the timekeeper fullscreen.
             </p>
@@ -46,11 +47,17 @@
 
         <div id="start" class="hide">
 
-            <div class="center-contents-absolute">
-                <button class="btn green big" id="start-btn">
-                    START RACE
-                </button>
-            </div>
+            {% if heats|length  == 1 %}
+            <button class="btn green big" id="start-btn-heat-1" data-heat="1" onclick="startEvent(this)" disabled>
+                START RACE
+            </button>
+            {% else %}
+                {% for heat in heats %}
+                    <button class="btn green big" id="start-btn-heat-{{heat}}" data-heat="{{heat}}" onclick="startEvent(this)" disabled>
+                        START HEAT {{heat}}
+                    </button>
+                {% endfor %}
+            {% endif %}
 
         </div>
 

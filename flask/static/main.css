@@ -177,6 +177,8 @@ button.btn, .btn:active, .btn:focus{
 
 button.btn.big{
     font-size: 2em;
+    margin: 1em auto;
+    display: block;
 }
 
 button.btn:hover{
@@ -278,6 +280,10 @@ button.toggle.toggled{
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
     padding-top: 1em;
+}
+
+#start{
+    text-align: center;
 }
 
 button.menu-btn{

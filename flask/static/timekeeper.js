@@ -106,9 +106,7 @@ function updateRunner(runner) {
 
 function updateEvent() {
     window.eventObject.runners.forEach(runner => updateRunner(runner))
-    if (window.eventObject.start > 0) {
-        startBtn.disabled = true
-    }
+    UpdateStarts()
 }
 
 function formatTime(milliseconds) {
@@ -182,13 +180,25 @@ socket.on('event-reset', payload => {
     updateEvent()
 })
 
-const startBtn = document.getElementById('start-btn')
-function startEvent(){
-    startBtn.disabled = true
-    socket.emit('start', {start: Date.now()})
+function startEvent(e){
+    socket.emit('start', {
+        start: Date.now(),
+        heat: parseInt(e.dataset.heat)
+    })
 }
 
-startBtn.onclick = startEvent
+function UpdateStarts() {
+    const prefix = 'start-btn-heat-'
+    window.eventObject.heats.started.forEach(i => {
+        document.getElementById(`${prefix}${i}`).disabled = true
+    })
+    window.eventObject.heats.future.forEach(i => {
+        document.getElementById(`${prefix}${i}`).disabled = true
+    })
+    if (window.eventObject.heats.next > 0) {
+        document.getElementById(`${prefix}${window.eventObject.heats.next}`).disabled = false;
+    }
+}
 
 function splitRunner(btn) {
     btn.disabled = true

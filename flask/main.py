@@ -30,7 +30,7 @@ def initialize():
 @app.route('/timekeeper')
 def timekeeper():
     global MANAGER
-    return render_template('timekeeper.html', runners=MANAGER.runners, splits=MANAGER.split_labels, title=MANAGER.title, tag=MANAGER.tag)
+    return render_template('timekeeper.html', runners=MANAGER.runners, splits=MANAGER.split_labels, title=MANAGER.title, tag=MANAGER.tag, heats=MANAGER.heats)
 
 @app.route('/admin')
 def admin():
@@ -54,8 +54,7 @@ def update_client(data):
 @socketio.on('start')
 def start_event(json):
     global MANAGER
-    if MANAGER.start == 0:
-        MANAGER.start_event(json['start'])
+    MANAGER.start_event(json['start'], json['heat'])
     return emit('event-reset', MANAGER.get_event_object(), broadcast=True)
 
 @socketio.on('split')
