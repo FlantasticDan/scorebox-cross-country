@@ -1,5 +1,4 @@
 const clock = document.getElementById('clock')
-const startBtn = document.getElementById('start-btn')
 
 // Huge shout out to Jake Archibald for this work of brilliance
 // https://gist.github.com/jakearchibald/cb03f15670817001b1157e62a076fe95
@@ -54,9 +53,6 @@ animationInterval(1000, controller.signal, time => {
 
 function updateEvent() {
     window.eventObject.runners.forEach(runner => updateRunner(runner))
-    if (window.eventObject.start > 0) {
-        startBtn.disabled = true
-    }
 }
 
 function updateRunner(runner) {
@@ -125,13 +121,6 @@ socket.on('runner-update', payload => {
 })
 
 window.eventObject = undefined
-
-function startEvent(){
-    startBtn.disabled = true
-    socket.emit('start', {start: Date.now()})
-}
-
-startBtn.onclick = startEvent
 
 const exportBtn = document.getElementById('export-btn')
 
