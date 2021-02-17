@@ -10,6 +10,7 @@ public class SocketConnection : MonoBehaviour
     public Dictionary<string, string> timekeeper = new Dictionary<string, string>();
     public Dictionary<string, string> placementkeeper = new Dictionary<string, string>();
     public Dictionary<string, bool> visibilitymanager = new Dictionary<string, bool>();
+    public Dictionary<string, string> lowerthirdkeeper = new Dictionary<string, string>();
     public int max_entries = 13;
 
     void Start()
@@ -25,6 +26,10 @@ public class SocketConnection : MonoBehaviour
         visibilitymanager.Add("clock", true);
         visibilitymanager.Add("placement", true);
         visibilitymanager.Add("lower_third", false);
+
+        lowerthirdkeeper.Add("title", "");
+        lowerthirdkeeper.Add("subtitle", "");
+        lowerthirdkeeper.Add("lower_third_mode", "one_liner");
 
         var ws = new WebSocket ("ws://127.0.0.1:5500");
 
@@ -43,6 +48,9 @@ public class SocketConnection : MonoBehaviour
             }
             if (payload["mode"] == "visibility") {
                 ProcessVisibilityMode(payload);
+            }
+            if (payload["mode"] == "lower_third") {
+                ProcessLowerThirdMode(payload);
             }
         };
 
@@ -100,5 +108,11 @@ public class SocketConnection : MonoBehaviour
         visibilitymanager["clock"] = bool.Parse(payload["clock"]);
         visibilitymanager["placement"] = bool.Parse(payload["placement"]);
         visibilitymanager["lower_third"] = bool.Parse(payload["lower_third"]);
+    }
+
+    void ProcessLowerThirdMode(Dictionary<string, string> payload){
+        lowerthirdkeeper["title"] = payload["title"];
+        lowerthirdkeeper["subtitle"] = payload["subtitle"];
+        lowerthirdkeeper["lower_third_mode"] = payload["lower_third_mode"];
     }
 }

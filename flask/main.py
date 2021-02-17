@@ -82,6 +82,12 @@ def update_visibility(json):
     MANAGER.update_visibility(json['key'], json['state'])
     return emit('visibility-update', {'state': MANAGER.visibility[json['key']], 'key': json['key']}, broadcast=True)
 
+@socketio.on('lower_third', namespace='/admin')
+def update_lower_third(json):
+    global MANAGER
+    MANAGER.update_lower_third(json['title'], json['subtitle'])
+    return emit('lower_third_update', MANAGER.lower_third, broadcast=True)
+
 if __name__ == '__main__':
     # webbrowser.open('http://localhost:5000')
     socketio.run(app, port=5000)

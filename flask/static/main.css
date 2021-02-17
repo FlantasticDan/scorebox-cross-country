@@ -494,9 +494,8 @@ button.grid-btn .runner-clock{
     letter-spacing: 0.15em;
 }
 
-.lower-third-input .lower-third-input {
+.lower-third-input {
     width: 100%;
-    /* box-sizing: border-box; */
     padding: 0.5em;
 }
 
@@ -518,7 +517,7 @@ button.grid-btn .runner-clock{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1em;
-    margin: auto auto 0;
+    margin: auto auto 0.5em auto;
 }
 
 .lower-third-buttons .btn {

@@ -83,6 +83,12 @@ class CrossCountryManager:
             'lower_third': False
         }
 
+        self.lower_third = {
+            'title': '',
+            'subtitle': '',
+            'lower_third_mode': 'one_liner'
+        }
+
         self.newist_split = -1
 
     def start_event(self, timestamp):
@@ -259,7 +265,8 @@ class CrossCountryManager:
     
     def get_admin_object(self):
         return {
-            'visibility': self.visibility
+            'visibility': self.visibility,
+            'lower_third': self.lower_third
         }
     
     def export_visibility(self):
@@ -273,3 +280,25 @@ class CrossCountryManager:
     def update_visibility(self, key: str, state: bool):
         self.visibility[key] = state
         self.overlay.push_json(self.export_visibility())
+    
+    def update_lower_third(self, title: str, subtitle: str):
+        self.lower_third['title'] = title
+        self.lower_third['subtitle'] = subtitle
+        if self.lower_third['subtitle'] == '':
+            self.lower_third['lower_third_mode'] = 'one_liner'
+        else:
+            self.lower_third['lower_third_mode'] = 'subtitled'
+        
+        self.overlay.push_json(self.export_lower_third())
+
+        if not self.visibility['lower_third']:
+            self.update_visibility('lower_third', True)
+            self.socketio.emit('visibility-update', {'state': self.visibility['lower_third'], 'key': 'lower_third'}, namespace='/admin')
+
+    def export_lower_third(self):
+        return {
+            'mode': 'lower_third',
+            'title': self.lower_third['title'],
+            'subtitle': self.lower_third['subtitle'],
+            'lower_third_mode': self.lower_third['lower_third_mode']
+        }

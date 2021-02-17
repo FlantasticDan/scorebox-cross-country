@@ -224,6 +224,7 @@ function UpdateAdmin() {
     UpdateVisibilityToggle('placement', tSplitNo, tSplitYes)
     UpdateVisibilityToggle('on_new', tSplitAutoNo, tSplitAutoYes)
     UpdateVisibilityToggle('lower_third', tLowerThirdNo, tLowerThirdYes)
+    UpdateLowerThird()
 }
 
 function ChangeVisibility(key) {
@@ -232,3 +233,36 @@ function ChangeVisibility(key) {
 
     admin.emit('visibility', {key: key, state: newState})
 }
+
+const lowerThirdTitlePreview = document.getElementById('lower-third-preview-title')
+const lowerThirdSubtitlePreview = document.getElementById('lower-third-preview-subtitle')
+
+const lowerThirdTitleInput = document.getElementById('lower-third-title-input')
+const lowerThirdSubtitleInput = document.getElementById('lower-third-subtitle-input')
+
+const lowerThirdDisplay = document.getElementById('lower-third-display')
+const lowerThirdClear = document.getElementById('lower-third-clear')
+
+function UpdateLowerThird() {
+    lowerThirdTitlePreview.innerText = window.adminObject.lower_third.title
+    lowerThirdSubtitlePreview.innerText = window.adminObject.lower_third.subtitle
+}
+
+lowerThirdClear.onclick = () => {
+    lowerThirdSubtitleInput.value = ''
+    lowerThirdTitleInput.value = ''
+}
+
+lowerThirdDisplay.onclick = () => {
+    if (lowerThirdTitleInput.value.length > 0) {
+        admin.emit('lower_third', {
+            title: lowerThirdTitleInput.value,
+            subtitle: lowerThirdSubtitleInput.value
+        })
+    }
+}
+
+admin.on('lower_third_update', payload => {
+    window.adminObject.lower_third = payload
+    UpdateLowerThird()
+})
