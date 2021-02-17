@@ -259,6 +259,9 @@ lowerThirdDisplay.onclick = () => {
             title: lowerThirdTitleInput.value,
             subtitle: lowerThirdSubtitleInput.value
         })
+
+        lowerThirdSubtitleInput.value = ''
+        lowerThirdTitleInput.value = ''
     }
 }
 

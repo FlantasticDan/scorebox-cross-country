@@ -1,10 +1,12 @@
 '''ScoreBox Cross Country Manager'''
 import time
 import csv
+import json
 from io import StringIO
 from operator import itemgetter
+from threading import Thread
 
-from sock import Overlay
+import websock
 
 # COLORS = {
 #     'red': 'CC0000',
@@ -64,11 +66,19 @@ def format_time(milliseconds):
             pretty_time = pretty_time[2:]
     return f'{pretty_time}.{decimal}'
 
+def format_time_estimate(milliseconds):
+    rounded = round(milliseconds / 1000, 1)
+    string_time, _ = str(rounded).split('.')
+    pretty_time = time.strftime('%M:%S', time.gmtime(int(string_time)))
+    if pretty_time[0] == '0':
+        pretty_time = pretty_time[1:]
+    return f'{pretty_time}'
+
 class CrossCountryManager:
     
     def __init__(self, csv, socketio):
         self.title, self.tag, self.split_labels, self.team_colors, self.runners = process_csv(csv)
-        self.overlay = Overlay(self.title, self.tag)
+        self.overlay = Overlay(self.title, self.tag, self)
         self.socketio = socketio
 
         self.start = 0
@@ -302,3 +312,61 @@ class CrossCountryManager:
             'subtitle': self.lower_third['subtitle'],
             'lower_third_mode': self.lower_third['lower_third_mode']
         }
+    
+    def overlay_reset(self):
+        self.overlay.push_json(self.export_visibility())
+        self.overlay.push_json(self.export_placements())
+        self.overlay.push_json(self.export_lower_third())
+
+
+class Overlay:
+
+    def __init__(self, title, tag, manager: CrossCountryManager):
+        self.websock_server = websock.WebSocketServer('127.0.0.1', port=5500, on_connection_open=self.connection_handler)
+
+        self.thread = Thread(target=self.runner)
+        self.thread.start()
+
+        self.race_start = 0
+        self.clock_thread = Thread(target=self.clock_pulse)
+
+        self.title = title
+        self.tag = tag
+        self.manager = manager
+
+    def runner(self):
+        self.websock_server.serve_forever()
+    
+    def push(self, data):
+        self.websock_server.send_all(None, str(data))
+    
+    def push_json(self, dataObject):
+        self.push(json.dumps(dataObject))
+
+    def clock_pulse(self):
+        while True:
+            race_time = (time.time() * 1000) - self.race_start
+            display = format_time_estimate(race_time)
+            export = {
+                'mode': 'clock',
+                'display': display,
+                'title': self.title,
+                'tag': self.tag,
+            }
+            self.push_json(export)
+            time.sleep(0.5)
+    
+    def start_clock(self, start_timestamp):
+        self.race_start = start_timestamp
+        self.clock_thread.start()
+    
+    def connection_handler(self, client):
+        export = {
+            'mode': 'clock',
+            'display': '0:00',
+            'title': self.title,
+            'tag': self.tag,
+        }
+        self.push_json(export)
+
+        self.manager.overlay_reset()
