@@ -3,7 +3,7 @@ from threading import Thread
 
 from eventlet.green import socket
 from eventlet.green import asyncore
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from flask_socketio import SocketIO, emit
 
 from manager import CrossCountryManager
@@ -15,8 +15,12 @@ VERSION = 'v. 0.2 (02162021)'
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-@app.route('/setup')
+@app.route('/')
 def index():
+    return splits()
+
+@app.route('/setup')
+def setup():
     return render_template('setup.html', version=VERSION)
 
 @app.route('/init', methods=['POST'])
