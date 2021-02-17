@@ -17,3 +17,23 @@ A runner object represents all the data ScoreBox has for an individual runner.
     "finish": UNIX Timestamp (milliseconds),
 }
 ```
+
+## Building
+Stupidly useful pyinstaller spec mod:
+```
+datas=[('templates', 'templates'), ('static', 'static')],
+hiddenimports=[
+    'engineio.async_drivers.eventlet',
+    'eventlet.hubs.epolls',
+    'eventlet.hubs.kqueue',
+    'eventlet.hubs.selects',
+    'dns.dnssec',
+    'dns.e164',
+    'dns.hash',
+    'dns.namedict',
+    'dns.tsigkeyring',
+    'dns.update',
+    'dns.version',
+    'dns.zone'
+    ],
+```

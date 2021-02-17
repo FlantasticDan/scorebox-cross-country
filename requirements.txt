@@ -1,3 +1,4 @@
+altgraph==0.17
 astroid==2.4.2
 bidict==0.21.2
 click==7.1.2
@@ -6,6 +7,7 @@ dnspython==1.16.0
 eventlet==0.30.1
 Flask==1.1.2
 Flask-SocketIO==5.0.1
+future==0.18.2
 greenlet==1.0.0
 isort==5.7.0
 itsdangerous==1.1.0
@@ -13,9 +15,13 @@ Jinja2==2.11.3
 lazy-object-proxy==1.4.3
 MarkupSafe==1.1.1
 mccabe==0.6.1
+pefile==2019.4.18
+pyinstaller==4.2
+pyinstaller-hooks-contrib==2020.11
 pylint==2.6.0
 python-engineio==4.0.0
 python-socketio==5.0.4
+pywin32-ctypes==0.2.0
 six==1.15.0
 toml==0.10.2
 websock==1.0.4
