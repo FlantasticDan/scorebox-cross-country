@@ -23,7 +23,7 @@ def index():
 def initialize():
     setup = request.form
     global MANAGER
-    MANAGER = CrossCountryManager(setup['csv'])
+    MANAGER = CrossCountryManager(setup['csv'], socketio)
     socketio.emit('event-reset', MANAGER.get_event_object(), broadcast=True)
     return 'OK'
 

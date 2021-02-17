@@ -66,9 +66,10 @@ def format_time(milliseconds):
 
 class CrossCountryManager:
     
-    def __init__(self, csv):
+    def __init__(self, csv, socketio):
         self.title, self.tag, self.split_labels, self.team_colors, self.runners = process_csv(csv)
         self.overlay = Overlay(self.title, self.tag)
+        self.socketio = socketio
 
         self.start = 0
 
@@ -81,7 +82,7 @@ class CrossCountryManager:
             'on_new': True
         }
 
-        self.last_split = None
+        self.newist_split = -1
 
     def start_event(self, timestamp):
         self.start = timestamp
@@ -89,15 +90,26 @@ class CrossCountryManager:
         for i in range(len(self.runners)):
             self.runners[i]['start'] = timestamp
     
+    def update_newist_split(self, split_index):
+        if self.newist_split < split_index:
+            self.newist_split = split_index
+            if self.visibility['on_new']:
+                self.update_visibility('placement', True)
+                self.socketio.emit('visibility-update', {'state': self.visibility['placement'], 'key': 'placement'}, namespace='/admin')
+    
     def split(self, split_index: int, runner_index: int, timestamp):
         self.runners[runner_index]['splits'][split_index] = timestamp
         self.splits[split_index] = self.get_results(split_index)
+
+        self.update_newist_split(split_index)
 
         self.overlay.push_json(self.export_placements())
     
     def finish_runner(self, runner_index: int, timestamp):
         self.runners[runner_index]['finish'] = timestamp
         self.finish = self.get_finish_results()
+
+        self.update_newist_split(100)
 
         self.overlay.push_json(self.export_placements())
 
@@ -183,7 +195,8 @@ class CrossCountryManager:
             if not placements:
                 return
         max_entries = 12
-        placements = placements[:5] + placements[5:][(-1 * (max_entries - 5)):]
+        fixed = 5
+        placements = placements[:fixed] + placements[fixed:][(-1 * (max_entries - fixed)):]
         for i in range(max_entries):
             if i <= len(placements) - 1:
                 runner = {
