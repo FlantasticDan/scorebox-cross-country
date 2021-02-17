@@ -75,6 +75,14 @@ class CrossCountryManager:
         self.splits = len(self.split_labels) * [None]
         self.finish = None
 
+        self.visibility = {
+            'clock': True,
+            'placement': True,
+            'on_new': True
+        }
+
+        self.last_split = None
+
     def start_event(self, timestamp):
         self.start = timestamp
         self.overlay.start_clock(self.start)
@@ -234,3 +242,19 @@ class CrossCountryManager:
         ret = out.getvalue()
         out.close()
         return ret
+    
+    def get_admin_object(self):
+        return {
+            'visibility': self.visibility
+        }
+    
+    def export_visibility(self):
+        return {
+            'mode': 'visibility',
+            'clock': self.visibility['clock'],
+            'placement': self.visibility['placement']
+        }
+
+    def update_visibility(self, key: str, state: bool):
+        self.visibility[key] = state
+        self.overlay.push_json(self.export_visibility())

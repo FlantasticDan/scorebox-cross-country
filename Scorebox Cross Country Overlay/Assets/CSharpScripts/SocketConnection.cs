@@ -9,6 +9,7 @@ public class SocketConnection : MonoBehaviour
     // Start is called before the first frame update
     public Dictionary<string, string> timekeeper = new Dictionary<string, string>();
     public Dictionary<string, string> placementkeeper = new Dictionary<string, string>();
+    public Dictionary<string, bool> visibilitymanager = new Dictionary<string, bool>();
     public int max_entries = 13;
 
     void Start()
@@ -20,6 +21,9 @@ public class SocketConnection : MonoBehaviour
         timekeeper.Add("tag", "Event Tag");
 
         GeneratePlacements();
+
+        visibilitymanager.Add("clock", true);
+        visibilitymanager.Add("placement", true);
 
         var ws = new WebSocket ("ws://127.0.0.1:5500");
 
@@ -36,6 +40,9 @@ public class SocketConnection : MonoBehaviour
             }
             if (payload["mode"] == "placement") {
                 ProcessPlacementMode(payload);
+            }
+            if (payload["mode"] == "visibility") {
+                ProcessVisibilityMode(payload);
             }
         };
 
@@ -86,5 +93,11 @@ public class SocketConnection : MonoBehaviour
                 placementkeeper[j + "color"] = payload[j + "color"];
             }
         };
+    }
+
+    void ProcessVisibilityMode(Dictionary<string, string> payload)
+    {
+        visibilitymanager["clock"] = bool.Parse(payload["clock"]);
+        visibilitymanager["placement"] = bool.Parse(payload["placement"]);
     }
 }

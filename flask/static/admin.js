@@ -153,24 +153,72 @@ async function writeExportCSV(text) {
     await writeable.close()
 }
 
-function ToggleBehavior(btnA, btnB) {
+function ToggleBehavior(btnA, btnB, action) {
     btnA.classList.toggle('toggled')
     btnB.classList.toggle('toggled')
+    action()
 }
 
 const tClockNo = document.getElementById('toggle-clock-no')
 const tClockYes = document.getElementById('toggle-clock-yes')
-tClockNo.onclick = () => {ToggleBehavior(tClockNo, tClockYes)}
-tClockYes.onclick = () => {ToggleBehavior(tClockNo, tClockYes)}
+function ClockVisibilityChange() {
+    ChangeVisibility('clock')
+}
+tClockNo.onclick = () => {ToggleBehavior(tClockNo, tClockYes, ClockVisibilityChange)}
+tClockYes.onclick = () => {ToggleBehavior(tClockNo, tClockYes, ClockVisibilityChange)}
 
 const tSplitNo = document.getElementById('toggle-splits-no')
 const tSplitYes = document.getElementById('toggle-splits-yes')
-tSplitNo.onclick = () => {ToggleBehavior(tSplitNo, tSplitYes)}
-tSplitYes.onclick = () => {ToggleBehavior(tSplitNo, tSplitYes)}
+function SplitVisibilityChange() {
+    ChangeVisibility('placement')
+}
+tSplitNo.onclick = () => {ToggleBehavior(tSplitNo, tSplitYes, SplitVisibilityChange)}
+tSplitYes.onclick = () => {ToggleBehavior(tSplitNo, tSplitYes, SplitVisibilityChange)}
 
 const tSplitAutoNo = document.getElementById('toggle-splits-auto-no')
 const tSplitAutoYes = document.getElementById('toggle-splits-auto-yes')
-tSplitAutoNo.onclick = () => {ToggleBehavior(tSplitAutoNo, tSplitAutoYes)}
-tSplitAutoYes.onclick = () => {ToggleBehavior(tSplitAutoNo, tSplitAutoYes)}
+function SplitAutoVisibilityChange() {
+    ChangeVisibility('on_new')
+}
+tSplitAutoNo.onclick = () => {ToggleBehavior(tSplitAutoNo, tSplitAutoYes, SplitAutoVisibilityChange)}
+tSplitAutoYes.onclick = () => {ToggleBehavior(tSplitAutoNo, tSplitAutoYes, SplitAutoVisibilityChange)}
 
+window.adminObject = undefined
+const admin = io('/admin');
 
+admin.on('connect', () => {
+    admin.emit('admin-request', 'update')
+})
+
+admin.on('admin-reset', payload => {
+    window.adminObject = payload
+})
+
+admin.on('visibility-update', payload => {
+    window.adminObject.visibility[payload.key] = payload.state
+    UpdateAdmin()
+})
+
+function UpdateVisibilityToggle(key, negative, positive) {
+    if (window.adminObject.visibility[key]) {
+        negative.classList.remove('toggled')
+        positive.classList.add('toggled')
+    }
+    else {
+        negative.classList.add('toggled')
+        positive.classList.remove('toggled')
+    }
+}
+
+function UpdateAdmin() {
+    UpdateVisibilityToggle('clock', tClockNo, tClockYes)
+    UpdateVisibilityToggle('placement', tSplitNo, tSplitYes)
+    UpdateVisibilityToggle('on_new', tSplitAutoNo, tSplitAutoYes)
+}
+
+function ChangeVisibility(key) {
+    let newState = !window.adminObject.visibility[key]
+    window.adminObject.visibility[key] = newState
+
+    admin.emit('visibility', {key: key, state: newState})
+}

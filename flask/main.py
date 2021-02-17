@@ -70,6 +70,18 @@ def finish_runner(json):
     MANAGER.finish_runner(json['runner'], json['timestamp'])
     return emit('runner-update', MANAGER.runners[json['runner']], broadcast=True)
 
+@socketio.on('admin-request', namespace='/admin')
+def update_admin_client(data):
+    global MANAGER
+    if MANAGER:
+        return emit("admin-reset", MANAGER.get_admin_object())
+
+@socketio.on('visibility', namespace='/admin')
+def update_visibility(json):
+    global MANAGER
+    MANAGER.update_visibility(json['key'], json['state'])
+    return emit('visibility-update', {'state': MANAGER.visibility[json['key']], 'key': json['key']}, broadcast=True)
+
 if __name__ == '__main__':
     # webbrowser.open('http://localhost:5000')
     socketio.run(app, port=5000)
