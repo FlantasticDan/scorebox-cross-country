@@ -8,6 +8,7 @@ public class VisibilityManager : MonoBehaviour
     private Dictionary<string, bool> visibilitymanager;
     public GameObject clockContainer;
     public GameObject splitContainer;
+    public GameObject lowerThirdContainer;
 
     // Start is called before the first frame update
     void Start()
@@ -20,5 +21,6 @@ public class VisibilityManager : MonoBehaviour
     {
         clockContainer.SetActive(visibilitymanager["clock"]);
         splitContainer.SetActive(visibilitymanager["placement"]);
+        lowerThirdContainer.SetActive(visibilitymanager["lower_third"]);
     }
 }

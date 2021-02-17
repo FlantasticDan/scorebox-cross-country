@@ -24,6 +24,7 @@ public class SocketConnection : MonoBehaviour
 
         visibilitymanager.Add("clock", true);
         visibilitymanager.Add("placement", true);
+        visibilitymanager.Add("lower_third", false);
 
         var ws = new WebSocket ("ws://127.0.0.1:5500");
 
@@ -32,9 +33,8 @@ public class SocketConnection : MonoBehaviour
         };
 
         ws.OnMessage += (sender, e) => {
-            // Debug.Log("Socket Message");
             Dictionary<string, string> payload = JsonConvert.DeserializeObject<Dictionary<string, string>>(e.Data);
-            // Debug.Log(payload["mode"]);
+
             if (payload["mode"] == "clock") {
                 ProcessClockMode(payload);
             }
@@ -99,5 +99,6 @@ public class SocketConnection : MonoBehaviour
     {
         visibilitymanager["clock"] = bool.Parse(payload["clock"]);
         visibilitymanager["placement"] = bool.Parse(payload["placement"]);
+        visibilitymanager["lower_third"] = bool.Parse(payload["lower_third"]);
     }
 }

@@ -79,7 +79,8 @@ class CrossCountryManager:
         self.visibility = {
             'clock': True,
             'placement': True,
-            'on_new': True
+            'on_new': True,
+            'lower_third': False
         }
 
         self.newist_split = -1
@@ -265,7 +266,8 @@ class CrossCountryManager:
         return {
             'mode': 'visibility',
             'clock': self.visibility['clock'],
-            'placement': self.visibility['placement']
+            'placement': self.visibility['placement'],
+            'lower_third': self.visibility['lower_third']
         }
 
     def update_visibility(self, key: str, state: bool):

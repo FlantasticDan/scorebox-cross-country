@@ -183,6 +183,14 @@ function SplitAutoVisibilityChange() {
 tSplitAutoNo.onclick = () => {ToggleBehavior(tSplitAutoNo, tSplitAutoYes, SplitAutoVisibilityChange)}
 tSplitAutoYes.onclick = () => {ToggleBehavior(tSplitAutoNo, tSplitAutoYes, SplitAutoVisibilityChange)}
 
+const tLowerThirdNo = document.getElementById('toggle-lower-third-no')
+const tLowerThirdYes = document.getElementById('toggle-lower-third-yes')
+function LowerThirdVisibilityChange() {
+    ChangeVisibility('lower_third')
+}
+tLowerThirdNo.onclick = () => {ToggleBehavior(tLowerThirdNo, tLowerThirdYes, LowerThirdVisibilityChange)}
+tLowerThirdYes.onclick = () => {ToggleBehavior(tLowerThirdNo, tLowerThirdYes, LowerThirdVisibilityChange)}
+
 window.adminObject = undefined
 const admin = io('/admin');
 
@@ -192,6 +200,7 @@ admin.on('connect', () => {
 
 admin.on('admin-reset', payload => {
     window.adminObject = payload
+    UpdateAdmin()
 })
 
 admin.on('visibility-update', payload => {
@@ -214,6 +223,7 @@ function UpdateAdmin() {
     UpdateVisibilityToggle('clock', tClockNo, tClockYes)
     UpdateVisibilityToggle('placement', tSplitNo, tSplitYes)
     UpdateVisibilityToggle('on_new', tSplitAutoNo, tSplitAutoYes)
+    UpdateVisibilityToggle('lower_third', tLowerThirdNo, tLowerThirdYes)
 }
 
 function ChangeVisibility(key) {
