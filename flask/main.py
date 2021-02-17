@@ -37,6 +37,11 @@ def admin():
     global MANAGER
     return render_template('admin.html', version=VERSION, runners=MANAGER.runners, splits=MANAGER.split_labels, title=MANAGER.title, tag=MANAGER.tag)
 
+@app.route('/splits')
+def splits():
+    global MANAGER
+    return render_template('splits.html', version=VERSION, runners=MANAGER.runners, splits=MANAGER.split_labels, title=MANAGER.title, tag=MANAGER.tag)
+
 @app.route('/export')
 def export_csv():
     global MANAGER

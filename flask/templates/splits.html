@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+
+        <title>Splits | ScoreBox Cross Country</title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="/static/main.css">
+
+    </head>
+
+    <body>
+
+        <div id="build-tag">
+            {{version}}
+        </div>
+
+        <div id="header-chrome">
+            <img src="/static/img/logo-white.png" height="50px">
+            <h1>{{title}}</h1>
+            <img src="/static/img/runner-icon.svg" height="25px">
+            <h2>{{tag}}</h2>
+            <div></div>
+            <button class="btn" id="export-btn">Export Splits</button>
+        </div>
+
+        <div id="clock-container">
+            <div id="clock">
+                0:00
+            </div>
+        </div>
+
+        <div id="split-dashboard" class="dash-contents">
+            <h3>
+                Splits
+            </h3>
+            <p>
+                Splits are controlled by remote timekeepers, this is a realtime display of the results.
+            </p>
+
+            <table>
+                <tr>
+                    <th>Jersey</th>
+                    <th>Team</th>
+                    <th>Name</th>
+                    {% for split in splits %}
+                    <th>Split</th>
+                    <th>{{split}}</th>
+                    {% endfor %}
+                    <th>Split</th>
+                    <th>Finish</th>
+                </tr>
+                
+                {% for runner in runners %}
+                {% set run_loop = loop %}
+                <tr>
+                    <td>{{runner.jersey}}</td>
+                    <td>{{runner.team}}</td>
+                    <td>{{runner.name}}</td>
+                    {% for split in splits %}
+                    <td id="runner{{run_loop.index0}}-split-{{loop.index0}}-split"></td>
+                    <td id="runner{{run_loop.index0}}-split-{{loop.index0}}-total"></td>
+                    {% endfor %}
+                    <td id="runner{{run_loop.index0}}-finish-split"></td>
+                    <td id="runner{{run_loop.index0}}-finish-total"></td>
+                </tr>
+                {% endfor %}
+
+            </table>
+        </div>
+        
+        <script src="/static/third-party/socket.io.min.js"></script>
+        <script src="/static/splits.js"></script>
+    </body>
+
+</html>
