@@ -182,6 +182,52 @@ class CrossCountryManager:
 
         self.overlay.push_json(self.export_placements())
 
+    def change_result(self, jersey, initial, timestamp, split):
+        if split == 'finish':
+            if initial == 'unknown':
+                self.remove_finish_unknown(timestamp)
+            else:
+                self.remove_finish(int(initial))
+            
+            if jersey != '':
+                self.finish_runner(self.get_runner_from_jersey(int(jersey)), timestamp)
+            else:
+                self.finish_unknown(timestamp)
+        else:
+            split = int(split)
+            if initial == 'unknown':
+                self.remove_split_unknown(split, timestamp)
+            else:
+                self.remove_split(int(initial), split)
+            
+            if jersey != '':
+                self.split(split, self.get_runner_from_jersey(int(jersey)), timestamp)
+            else:
+                self.split_unknown(split, timestamp)
+
+    def get_runner_from_jersey(self, jersey: int):
+        for runner in self.runners:
+            if int(runner['jersey']) == jersey:
+                return int(runner['runner_index'])
+    
+    def remove_split(self, runner_index, split):
+        self.runners[runner_index]['splits'][split] = 0
+    
+    def remove_split_unknown(self, split, timestamp):
+        for i in range(len(self.unknowns['splits'][split])):
+            if self.unknowns['splits'][split][i]['split'] == timestamp:
+                self.unknowns['splits'][split].pop(i)
+                return
+    
+    def remove_finish(self, runner_index):
+        self.runners[runner_index]['finish'] = 0
+    
+    def remove_finish_unknown(self, timestamp):
+        for i in range(len(self.unknowns['finish'])):
+            if self.unknowns['finish'][i]['split'] == timestamp:
+                self.unknowns['finish'].pop(i)
+                return
+
     def get_results(self, key: int):
         candidates = []
         for runner in self.runners:

@@ -342,7 +342,7 @@ function placementsToResults(placements) {
     htmlString = ""
     placements.forEach((placement, p) => {
         addition = `
-        <form class="split-result">
+        <form class="split-result" onsubmit="return ChangeResult(this)" autocomplete="off">
             <div class="result-placement">${p + 1}</div>
             <input type="text" onclick="this.setSelectionRange(0, this.value.length)" class="result-jersey color ${placement.color}" inputmode="numeric" name="jersey" value="${placement.jersey}" data-initialindex="${placement.ix}" data-timestamp="${placement.timestamp}" data-split="${placement.split}">
             <div class="result-name">${placement.runnerName}</div>
@@ -358,4 +358,19 @@ function placementsToResults(placements) {
     else {
         return '<p>No Results Yet</p>'
     }
+}
+
+function ChangeResult(f) {
+    jersey = f.elements.jersey
+
+    payload = {
+        jersey: jersey.value,
+        initial: jersey.dataset.initialindex,
+        timestamp: parseInt(jersey.dataset.timestamp),
+        split: jersey.dataset.split
+    }
+
+    socket.emit('result-change', payload)
+
+    return false
 }

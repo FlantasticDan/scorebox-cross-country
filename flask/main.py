@@ -1,4 +1,5 @@
 from threading import Thread
+from typing import Mapping
 
 from flask import Flask, render_template, request, redirect
 from flask_socketio import SocketIO, emit
@@ -8,7 +9,7 @@ from intro import bundled
 
 MANAGER = None
 
-VERSION = 'v. 0.3 (02202021)'
+VERSION = 'v. 0.3 (02212021)'
 
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode='eventlet')
@@ -87,6 +88,12 @@ def finish_runner(json):
     global MANAGER
     MANAGER.finish_runner(json['runner'], json['timestamp'])
     return emit('runner-update', MANAGER.runners[json['runner']], broadcast=True)
+
+@socketio.on('result-change')
+def change_result(json):
+    global MANAGER
+    MANAGER.change_result(json['jersey'], json['initial'], json['timestamp'], json['split'])
+    return emit('event-reset', MANAGER.get_event_object(), broadcast=True)
 
 @socketio.on('admin-request', namespace='/admin')
 def update_admin_client(data):
