@@ -186,6 +186,11 @@ socket.on('disconnect', () => {
 })
 
 socket.on('event-reset', payload => {
+    if (window.eventObject) {
+        if (window.eventObject.start != payload.start && payload.start == 0) {
+            window.location.href = window.location.href
+        }
+    }
     window.eventObject = payload
     clockHeader.classList.remove('disconnected')
     updateEvent()
