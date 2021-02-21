@@ -8,7 +8,7 @@ from intro import bundled
 
 MANAGER = None
 
-VERSION = 'v. 0.2 (02172021)'
+VERSION = 'v. 0.3 (02202021)'
 
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode='eventlet')
@@ -95,5 +95,5 @@ def update_lower_third(json):
     return emit('lower_third_update', MANAGER.lower_third, broadcast=True)
 
 if __name__ == '__main__':
-    bundled(VERSION, app)
+    # bundled(VERSION, app)
     socketio.run(app, port=5000)

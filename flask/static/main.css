@@ -326,35 +326,35 @@ button.grid-btn{
     height: 132px;
 }
 
-button.grid-btn.red{
+button.grid-btn.red, .result-jersey.color.red{
     background-color: #CC0000;
 }
 
-button.grid-btn.orange{
+button.grid-btn.orange, .result-jersey.color.orange{
     background-color: #CC6E00;
 }
 
-button.grid-btn.yellow{
+button.grid-btn.yellow, .result-jersey.color.yellow{
     background-color: #C8C81A;
 }
 
-button.grid-btn.green{
+button.grid-btn.green, .result-jersey.color.green{
     background-color: #09CF64;
 }
 
-button.grid-btn.blue{
+button.grid-btn.blue, .result-jersey.color.blue{
     background-color: #097ACF;
 }
 
-button.grid-btn.purple{
+button.grid-btn.purple, .result-jersey.color.purple{
     background-color: #9309CF;
 }
 
-button.grid-btn.gold{
+button.grid-btn.gold, .result-jersey.color.gold{
     background-color: #B79835;
 }
 
-button.grid-btn.silver{
+button.grid-btn.silver, .result-jersey.color.silver{
     background-color: #A6A6A6;
 }
 
@@ -529,4 +529,79 @@ button.grid-btn .runner-clock{
 
 .lower-third-buttons .btn {
     height: 2.6em;
+}
+
+.split-grid h4, .finish-grid h4{
+    font-family: 'Source Sans Pro';
+    font-size: 1.5em;
+    font-weight: 500;
+    margin: 1em;
+    text-align: center;
+}
+
+.split-grid p, .finish-grid p{
+    text-align: center;
+    color: var(--less-dark-grey);
+    font-style: italic;
+}
+
+form.split-result {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: auto auto 1fr auto auto;
+    align-items: center;
+    gap: 0.5em;
+    background: var(--less-dark-grey);
+    margin: 0.5em;
+}
+
+.result-placement {
+    font-family: 'Open Sans';
+    font-weight: 600;
+    font-size: 1.5em;
+    padding: 0 0 0 0.25em;
+    width: 1em;
+    text-align: center;
+}
+
+.result-name {
+    font-family: 'Open Sans';
+    font-size: 1.15em;
+    font-weight: 400;
+    margin: auto auto auto 0;
+    overflow: hidden;
+}
+
+.result-time {
+    font-family: 'Source Code Pro';
+}
+
+input.btn, input.btn:focus {
+    padding: 0.5em;
+    color: white;
+    background-color: var(--blue-primary);
+    border: 0px;
+    margin: auto 0.5em;
+    cursor: pointer;
+    font-size: 0.75em;
+}
+
+.split-result input[type="text"]{
+    width: 1.5em;
+    font-size: 1.5em;
+    box-sizing: border-box;
+    text-align: center;
+    font-family: 'Open Sans';
+    font-weight: 700;
+    height: 1.5em;
+    border: 2px solid var(--dark-grey);
+    background-color: transparent;
+    outline: 0px;
+    margin: 0.25em auto;
+    color: white;
+}
+
+.split-result input[type="text"]:focus{
+    color: black;
+    background-color: white;
 }

@@ -107,6 +107,7 @@ function updateRunner(runner) {
 function updateEvent() {
     window.eventObject.runners.forEach(runner => updateRunner(runner))
     UpdateStarts()
+    updatePlacements()
 }
 
 function formatTime(milliseconds) {
@@ -114,6 +115,16 @@ function formatTime(milliseconds) {
     minutes = dateReference.getUTCMinutes().toString()
     seconds = dateReference.getSeconds().toString().padStart(2, '0')
     return `${minutes}:${seconds}`
+}
+
+function formatPreciseTime(milliseconds){
+    const dateReference = new Date(milliseconds)
+    minutes = dateReference.getUTCMinutes().toString()
+    seconds = dateReference.getSeconds().toString().padStart(2, '0')
+    fractionalSecond = (milliseconds % 1000) / 1000
+    rounded = (Math.round(fractionalSecond * 10) / 10).toString()
+    rounded = rounded.slice(-1)
+    return `${minutes}:${seconds}.${rounded}`
 }
 
 const clock = document.getElementById('clock')
@@ -220,4 +231,77 @@ function finishRunner(btn) {
 socket.on('runner-update', payload => {
     updateRunner(payload)
     window.eventObject.runners[payload.runner_index] = payload
+    updatePlacements()
 })
+
+function updatePlacements() {
+    let placements = []
+    let finishers = []
+    const splitCount = window.eventObject.runners[0].splits.length
+
+    for (let i = 0; i < splitCount; i++){
+        placements.push([])
+    }
+
+    window.eventObject.runners.forEach(runner => {
+        for (let i = 0; i < splitCount; i++){
+            if (runner.splits[i] > 0) {
+                place = {
+                    runnerName: runner.name,
+                    time: runner.splits[i] - runner.start,
+                    jersey: runner.jersey,
+                    color: runner.color,
+                    display: formatPreciseTime(runner.splits[i] - runner.start)
+                }
+                placements[i].push(place)
+            }
+            else{
+                break
+            }
+        }
+
+        if (runner.finish > 0) {
+            fin = {
+                runnerName: runner.name,
+                time: runner.finish - runner.start,
+                jersey: runner.jersey,
+                color: runner.color,
+                display: formatPreciseTime(runner.finish - runner.start)
+            }
+            finishers.push(fin)
+        }
+    })
+
+    for (let i = 0; i < splitCount; i++){
+        placements[i].sort((a, b) => (a.time > b.time) ? 1 : -1)
+        document.getElementById(`split-${i}-results`).innerHTML = placementsToResults(placements[i])
+    }
+
+    finishers.sort((a, b) => (a.time > b.time) ? 1 : -1)
+    document.getElementById('finish-results').innerHTML = placementsToResults(finishers)
+
+    window.finishers = finishers
+    window.placements = placements
+}
+
+function placementsToResults(placements) {
+    htmlString = ""
+    placements.forEach((placement, i) => {
+        addition = `
+        <form class="split-result">
+            <div class="result-placement">${i + 1}</div>
+            <input type="text" onclick="this.setSelectionRange(0, this.value.length)" class="result-jersey color ${placement.color}" inputmode="numeric" name="jersey" value="${placement.jersey}">
+            <div class="result-name">${placement.runnerName}</div>
+            <div class="result-time">${placement.display}</div>
+            <input type="submit" class="btn" value="Update">
+        </form>
+        `
+        htmlString += addition
+    })
+    if (htmlString.length > 0) {
+        return htmlString
+    }
+    else {
+        return '<p>No Results Yet</p>'
+    }
+}

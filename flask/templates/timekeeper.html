@@ -63,27 +63,39 @@
 
         {% for split in splits %}
         {% set split_loop = loop %}
-        <div id="split-{{loop.index0}}" class="btn-grid hide split-grid">
-            {% for runner in runners %}
-            <button disabled class="grid-btn {{runner.color}}" id="split-{{split_loop.index0}}-btn-{{runner.runner_index}}" data-runnerIndex="{{runner.runner_index}}" data-splitindex="{{split_loop.index0}}" onclick="splitRunner(this)">
-                <span class="runner-name">{{runner.name}}</span>
-                <span class="jersey-number">{{runner.jersey}}</span>
-                <span class="runner-clock" id="split-{{split_loop.index0}}-clock-{{runner.runner_index}}">0:00</span>
-            </button>
-            {% endfor %}
+        <div id="split-{{loop.index0}}" class="hide split-grid">
+            <div class="btn-grid">
+                {% for runner in runners %}
+                <button disabled class="grid-btn {{runner.color}}" id="split-{{split_loop.index0}}-btn-{{runner.runner_index}}" data-runnerIndex="{{runner.runner_index}}" data-splitindex="{{split_loop.index0}}" onclick="splitRunner(this)">
+                    <span class="runner-name">{{runner.name}}</span>
+                    <span class="jersey-number">{{runner.jersey}}</span>
+                    <span class="runner-clock" id="split-{{split_loop.index0}}-clock-{{runner.runner_index}}">0:00</span>
+                </button>
+                {% endfor %}
+            </div>
+            <h4>Results</h4>
+            <div class="split-results" id="split-{{split_loop.index0}}-results">
+                <p>No Results Yet</p>
+            </div>
         </div>
         {% endfor %}
 
-        <div id="finish" class="btn-grid hide">
-            {% for runner in runners %}
-            <button disabled class="grid-btn {{runner.color}}" id="finish-btn-{{runner.runner_index}}" data-runnerIndex="{{runner.runner_index}}" onclick="finishRunner(this)">
-                <span class="runner-name">{{runner.name}}</span>
-                <span class="jersey-number">{{runner.jersey}}</span>
-                <span class="runner-clock" id="finish-clock-{{runner.runner_index}}">0:00</span>
-            </button>
-            {% endfor %}
+        <div id="finish" class="finish-grid hide">
+            <div class="btn-grid">
+                {% for runner in runners %}
+                <button disabled class="grid-btn {{runner.color}}" id="finish-btn-{{runner.runner_index}}" data-runnerIndex="{{runner.runner_index}}" onclick="finishRunner(this)">
+                    <span class="runner-name">{{runner.name}}</span>
+                    <span class="jersey-number">{{runner.jersey}}</span>
+                    <span class="runner-clock" id="finish-clock-{{runner.runner_index}}">0:00</span>
+                </button>
+                {% endfor %}
+            </div>
+            <h4>Results</h4>
+            <div class="split-results" id="finish-results">
+                <p>No Results Yet</p>
+            </div>
         </div>
-
+        
         <img src="/static/img/logo-white.png" width="100px" class="logo-opacity">
 
         <script src="/static/third-party/socket.io.min.js"></script>
