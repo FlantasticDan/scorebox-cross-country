@@ -189,10 +189,13 @@ class CrossCountryManager:
             else:
                 self.remove_finish(int(initial))
             
-            if jersey != '':
-                self.finish_runner(self.get_runner_from_jersey(int(jersey)), timestamp)
-            else:
+            if jersey == '':
                 self.finish_unknown(timestamp)
+            elif jersey == '.':
+                self.finish = self.get_finish_results()
+                self.overlay.push_json(self.export_placements())
+            else:
+                self.finish_runner(self.get_runner_from_jersey(int(jersey)), timestamp)
         else:
             split = int(split)
             if initial == 'unknown':
@@ -200,10 +203,13 @@ class CrossCountryManager:
             else:
                 self.remove_split(int(initial), split)
             
-            if jersey != '':
-                self.split(split, self.get_runner_from_jersey(int(jersey)), timestamp)
-            else:
+            if jersey == '':
                 self.split_unknown(split, timestamp)
+            elif jersey == '.':
+                self.splits[split] = self.get_results(split)
+                self.overlay.push_json(self.export_placements())
+            else:
+                self.split(split, self.get_runner_from_jersey(int(jersey)), timestamp)                    
 
     def get_runner_from_jersey(self, jersey: int):
         for runner in self.runners:
