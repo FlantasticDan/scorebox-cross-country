@@ -72,6 +72,11 @@
                     <span class="runner-clock" id="split-{{split_loop.index0}}-clock-{{runner.runner_index}}">0:00</span>
                 </button>
                 {% endfor %}
+                <button class="grid-btn" data-splitindex="{{split_loop.index0}}" onclick="splitUnknown(this)">
+                    <span class="runner-name">Unidentified Runner</span>
+                    <span class="jersey-number">?</span>
+                    <span class="runner-clock">&nbsp;</span>
+                </button>
             </div>
             <h4>Results</h4>
             <div class="split-results" id="split-{{split_loop.index0}}-results">
@@ -89,13 +94,18 @@
                     <span class="runner-clock" id="finish-clock-{{runner.runner_index}}">0:00</span>
                 </button>
                 {% endfor %}
+                <button class="grid-btn" onclick="finishUnknown(this)">
+                    <span class="runner-name">Unidentified Runner</span>
+                    <span class="jersey-number">?</span>
+                    <span class="runner-clock">&nbsp;</span>
+                </button>
             </div>
             <h4>Results</h4>
             <div class="split-results" id="finish-results">
                 <p>No Results Yet</p>
             </div>
         </div>
-        
+
         <img src="/static/img/logo-white.png" width="100px" class="logo-opacity">
 
         <script src="/static/third-party/socket.io.min.js"></script>

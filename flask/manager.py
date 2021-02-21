@@ -86,6 +86,7 @@ class CrossCountryManager:
         self.start = 0
 
         self.splits = len(self.split_labels) * [None]
+        self.unknowns = {'splits': [[] for _ in range(len(self.split_labels))], 'finish':[]}
         self.finish = None
 
         self.visibility = {
@@ -138,7 +139,41 @@ class CrossCountryManager:
         self.update_newist_split(split_index)
 
         self.overlay.push_json(self.export_placements())
-    
+
+    def split_unknown(self, split_index: int, timestamp: int):
+        unknown = {
+            'unknown_index': len(self.unknowns['splits'][split_index]),
+            'jersey': '',
+            'name': '',
+            'team': '',
+            'color': '',
+            'heat': 1,
+            'start': self.start,
+            'split': timestamp
+        }
+        self.unknowns['splits'][split_index].append(unknown)
+
+        self.splits[split_index] = self.get_results(split_index)
+        self.update_newist_split(split_index)
+        self.overlay.push_json(self.export_placements())
+
+    def finish_unknown(self, timestamp: int):
+        unknown = {
+            'unknown_index': len(self.unknowns['finish']),
+            'jersey': '',
+            'name': '',
+            'team': '',
+            'color': '',
+            'heat': 1,
+            'start': self.start,
+            'split': timestamp
+        }
+        self.unknowns['finish'].append(unknown)
+
+        self.finish = self.get_finish_results()
+        self.update_newist_split(100)
+        self.overlay.push_json(self.export_placements())
+
     def finish_runner(self, runner_index: int, timestamp):
         self.runners[runner_index]['finish'] = timestamp
         self.finish = self.get_finish_results()
@@ -160,6 +195,16 @@ class CrossCountryManager:
                 }
                 candidates.append(placement)
         
+        for unknown in self.unknowns['splits'][key]:
+            placement = {
+                'name': unknown['name'],
+                'jersey': unknown['jersey'],
+                'team': unknown['team'],
+                'color': unknown['color'],
+                'raw_split': unknown['split'] - unknown['start'],
+            }
+            candidates.append(placement)
+
         placements = sorted(candidates, key=itemgetter('raw_split'))
 
         return self.format_placements(placements)
@@ -176,6 +221,16 @@ class CrossCountryManager:
                     'raw_split': runner['finish'] - runner['start'],
                 }
                 candidates.append(placement)
+        
+        for unknown in self.unknowns['finish']:
+            placement = {
+                'name': unknown['name'],
+                'jersey': unknown['jersey'],
+                'team': unknown['team'],
+                'color': unknown['color'],
+                'raw_split': unknown['split'] - unknown['start'],
+            }
+            candidates.append(placement)
         
         placements = sorted(candidates, key=itemgetter('raw_split'))
 
@@ -211,7 +266,8 @@ class CrossCountryManager:
         return {
             'start': self.start,
             'runners': self.runners,
-            'heats': self.heat_object
+            'heats': self.heat_object,
+            'unknowns': self.unknowns
         }
     
     def export_placements(self):

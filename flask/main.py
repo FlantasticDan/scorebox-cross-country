@@ -70,6 +70,18 @@ def split_runner(json):
     MANAGER.split(json['split'], json['runner'], json['timestamp'])
     return emit('runner-update', MANAGER.runners[json['runner']], broadcast=True)
 
+@socketio.on('split-unknown')
+def split_unknown(json):
+    global MANAGER
+    MANAGER.split_unknown(json['split'], json['timestamp'])
+    return emit('unknown-update', MANAGER.unknowns, broadcast=True)
+
+@socketio.on('finish-unknown')
+def finish_unknown(json):
+    global MANAGER
+    MANAGER.finish_unknown(json['timestamp'])
+    return emit('unknown-update', MANAGER.unknowns, broadcast=True)
+
 @socketio.on('finish')
 def finish_runner(json):
     global MANAGER

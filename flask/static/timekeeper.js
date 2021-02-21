@@ -212,7 +212,7 @@ function UpdateStarts() {
 }
 
 function splitRunner(btn) {
-    btn.disabled = true
+    // btn.disabled = true
     socket.emit('split', {
         runner: parseInt(btn.dataset.runnerindex),
         timestamp: Date.now(),
@@ -220,17 +220,35 @@ function splitRunner(btn) {
     })
 }
 
+function splitUnknown(btn) {
+    socket.emit('split-unknown', {
+        timestamp: Date.now(),
+        split: parseInt(btn.dataset.splitindex)
+    })
+}
+
 function finishRunner(btn) {
-    btn.disabled = true
+    // btn.disabled = true
     socket.emit('finish', {
         runner: parseInt(btn.dataset.runnerindex),
         timestamp: Date.now()
     })
 }
 
+function finishUnknown(btn) {
+    socket.emit('finish-unknown', {
+        timestamp: Date.now(),
+    })
+}
+
 socket.on('runner-update', payload => {
     updateRunner(payload)
     window.eventObject.runners[payload.runner_index] = payload
+    updatePlacements()
+})
+
+socket.on('unknown-update', payload => {
+    window.eventObject.unknowns = payload
     updatePlacements()
 })
 
@@ -251,7 +269,10 @@ function updatePlacements() {
                     time: runner.splits[i] - runner.start,
                     jersey: runner.jersey,
                     color: runner.color,
-                    display: formatPreciseTime(runner.splits[i] - runner.start)
+                    display: formatPreciseTime(runner.splits[i] - runner.start),
+                    timestamp: runner.splits[i],
+                    ix: runner.runner_index,
+                    split: i
                 }
                 placements[i].push(place)
             }
@@ -266,10 +287,43 @@ function updatePlacements() {
                 time: runner.finish - runner.start,
                 jersey: runner.jersey,
                 color: runner.color,
-                display: formatPreciseTime(runner.finish - runner.start)
+                display: formatPreciseTime(runner.finish - runner.start),
+                timestamp: runner.finish,
+                ix: runner.runner_index,
+                split: "finish"
             }
             finishers.push(fin)
         }
+    })
+
+    window.eventObject.unknowns.splits.forEach((split, i) => {
+        split.forEach(unknown => {
+            place = {
+                runnerName: unknown.name,
+                time: unknown.split - unknown.start,
+                jersey: unknown.jersey,
+                color: unknown.color,
+                display: formatPreciseTime(unknown.split - unknown.start),
+                timestamp: unknown.split,
+                ix: "unknown",
+                split: i
+            }
+            placements[i].push(place)
+        })
+    })
+
+    window.eventObject.unknowns.finish.forEach((unknown, i) => {
+        fin = {
+            runnerName: unknown.name,
+            time: unknown.split - unknown.start,
+            jersey: unknown.jersey,
+            color: unknown.color,
+            display: formatPreciseTime(unknown.split - unknown.start),
+            timestamp: unknown.split,
+            ix: "unknown",
+            split: "finish"
+        }
+        finishers.push(fin)
     })
 
     for (let i = 0; i < splitCount; i++){
@@ -286,11 +340,11 @@ function updatePlacements() {
 
 function placementsToResults(placements) {
     htmlString = ""
-    placements.forEach((placement, i) => {
+    placements.forEach((placement, p) => {
         addition = `
         <form class="split-result">
-            <div class="result-placement">${i + 1}</div>
-            <input type="text" onclick="this.setSelectionRange(0, this.value.length)" class="result-jersey color ${placement.color}" inputmode="numeric" name="jersey" value="${placement.jersey}">
+            <div class="result-placement">${p + 1}</div>
+            <input type="text" onclick="this.setSelectionRange(0, this.value.length)" class="result-jersey color ${placement.color}" inputmode="numeric" name="jersey" value="${placement.jersey}" data-initialindex="${placement.ix}" data-timestamp="${placement.timestamp}" data-split="${placement.split}">
             <div class="result-name">${placement.runnerName}</div>
             <div class="result-time">${placement.display}</div>
             <input type="submit" class="btn" value="Update">
