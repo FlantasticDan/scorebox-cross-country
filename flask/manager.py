@@ -319,7 +319,8 @@ class CrossCountryManager:
             'start': self.start,
             'runners': self.runners,
             'heats': self.heat_object,
-            'unknowns': self.unknowns
+            'unknowns': self.unknowns,
+            'server_time': int(time.time() * 1000)
         }
     
     def export_placements(self):

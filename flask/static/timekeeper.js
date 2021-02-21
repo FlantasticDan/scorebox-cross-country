@@ -129,7 +129,7 @@ function formatPreciseTime(milliseconds){
 
 const clock = document.getElementById('clock')
 function timerTick() {
-    const reference = Date.now()
+    const reference = Date.now() + window.eventObject['server_time']
     if (window.eventObject.start > 0) {
         clock.innerText = formatTime(reference - window.eventObject.start)
 
@@ -186,6 +186,7 @@ socket.on('disconnect', () => {
 })
 
 socket.on('event-reset', payload => {
+    payload['server_time'] = payload['server_time'] - Date.now()
     if (window.eventObject) {
         if (window.eventObject.start != payload.start && payload.start == 0) {
             window.location.href = window.location.href
@@ -198,7 +199,7 @@ socket.on('event-reset', payload => {
 
 function startEvent(e){
     socket.emit('start', {
-        start: Date.now(),
+        start: Date.now() + window.eventObject['server_time'],
         heat: parseInt(e.dataset.heat)
     })
 }
@@ -220,14 +221,14 @@ function splitRunner(btn) {
     // btn.disabled = true
     socket.emit('split', {
         runner: parseInt(btn.dataset.runnerindex),
-        timestamp: Date.now(),
+        timestamp: Date.now() + window.eventObject['server_time'],
         split: parseInt(btn.dataset.splitindex)
     })
 }
 
 function splitUnknown(btn) {
     socket.emit('split-unknown', {
-        timestamp: Date.now(),
+        timestamp: Date.now() + window.eventObject['server_time'],
         split: parseInt(btn.dataset.splitindex)
     })
 }
@@ -236,13 +237,13 @@ function finishRunner(btn) {
     // btn.disabled = true
     socket.emit('finish', {
         runner: parseInt(btn.dataset.runnerindex),
-        timestamp: Date.now()
+        timestamp: Date.now() + window.eventObject['server_time']
     })
 }
 
 function finishUnknown(btn) {
     socket.emit('finish-unknown', {
-        timestamp: Date.now(),
+        timestamp: Date.now() + window.eventObject['server_time'],
     })
 }
 
