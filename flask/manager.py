@@ -338,7 +338,7 @@ class CrossCountryManager:
                     break
             if not placements:
                 return
-        max_entries = 12
+        max_entries = 13
         fixed = 5
         placements = placements[:fixed] + placements[fixed:][(-1 * (max_entries - fixed)):]
         for i in range(max_entries):
