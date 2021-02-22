@@ -258,3 +258,28 @@ admin.on('lower_third_update', payload => {
     window.adminObject.lower_third = payload
     UpdateLowerThird()
 })
+
+document.getElementById('new-race').onclick = importCSV
+
+async function importCSV() {
+    [handle] = await window.showOpenFilePicker({
+        multiple: false,
+        excludeAcceptAllOption: true,
+        types: [{accept: {'text/csv': ['.csv']}}]
+    })
+
+    fileData = await handle.getFile()
+    csv = await fileData.text()
+
+    payload = new FormData()
+
+    payload.append('csv', csv)
+
+    fetch('/newrace', {
+        method: 'POST',
+        cache: 'no-cache',
+        body: payload
+    }).then(res => {
+        window.location.href = '/admin'
+    })
+}

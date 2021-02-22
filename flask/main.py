@@ -30,6 +30,13 @@ def initialize():
     socketio.emit('event-reset', MANAGER.get_event_object(), broadcast=True)
     return 'OK'
 
+@app.route('/newrace', methods=['POST'])
+def new_race():
+    csv = request.form['csv']
+    MANAGER.new_race(csv)
+    socketio.emit('event-reset', MANAGER.get_event_object(), broadcast=True)
+    return 'OK'
+
 @app.route('/timekeeper')
 def timekeeper():
     global MANAGER

@@ -44,7 +44,6 @@ async function SubmitEventForm(e) {
             cache: 'no-cache',
             body: payload
         }).then(res => {
-            console.log(res)
             window.location.href = '/admin'
         })
 

@@ -445,6 +445,27 @@ class CrossCountryManager:
         self.overlay.push_json(self.export_placements())
         self.overlay.push_json(self.export_lower_third())
 
+    def new_race(self, csv):
+        self.title, self.tag, self.heats, self.split_labels, self.team_colors, self.runners = process_csv(csv)
+
+        self.start = 0
+
+        self.splits = len(self.split_labels) * [None]
+        self.unknowns = {'splits': [[] for _ in range(len(self.split_labels))], 'finish':[]}
+        self.finish = None
+
+        self.visibility['on_new'] = True
+        self.visibility['placement'] = False
+
+        self.newist_split = -1
+
+        self.heat_object = {
+            'started': [],
+            'next': 1,
+            'future': self.heats.copy()
+        }
+
+        self.overlay.new_race(self.title, self.tag)
 
 class Overlay:
 
@@ -471,7 +492,7 @@ class Overlay:
         self.push(json.dumps(dataObject))
 
     def clock_pulse(self):
-        while True:
+        while self.race_start > 0:
             race_time = (time.time() * 1000) - self.race_start
             display = format_time_estimate(race_time)
             export = {
@@ -496,4 +517,20 @@ class Overlay:
         }
         self.push_json(export)
 
+        self.manager.overlay_reset()
+    
+    def new_race(self, title, tag):
+        self.race_start = 0
+        self.clock_thread.join()
+        self.title = title
+        self.tag = tag
+        self.clock_thread = Thread(target=self.clock_pulse)
+
+        export = {
+            'mode': 'clock',
+            'display': '0:00',
+            'title': self.title,
+            'tag': self.tag,
+        }
+        self.push_json(export)
         self.manager.overlay_reset()
