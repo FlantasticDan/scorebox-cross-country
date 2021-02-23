@@ -1,5 +1,5 @@
-from threading import Thread
-from typing import Mapping
+import os
+import subprocess
 
 from flask import Flask, render_template, request, redirect
 from flask_socketio import SocketIO, emit
@@ -8,6 +8,10 @@ from manager import CrossCountryManager
 from intro import bundled
 
 MANAGER = None
+
+LOCALKEY = 'debug'
+OVERLAY_PATH = None
+OVERLAY_PROCESS = None
 
 VERSION = 'v. 0.3 (02212021)'
 
@@ -20,22 +24,37 @@ def index():
 
 @app.route('/setup')
 def setup():
-    return render_template('setup.html', version=VERSION)
+    global LOCALKEY
+    if request.args['key'] == LOCALKEY:
+        return render_template('setup.html', version=VERSION)
+    else:
+        return
 
 @app.route('/init', methods=['POST'])
 def initialize():
     setup = request.form
     global MANAGER
-    MANAGER = CrossCountryManager(setup['csv'], socketio)
-    socketio.emit('event-reset', MANAGER.get_event_object(), broadcast=True)
-    return 'OK'
+    global LOCALKEY
+    global OVERLAY_PATH
+    global OVERLAY_PROCESS
+    if request.args['key'] == LOCALKEY:
+        OVERLAY_PROCESS = subprocess.Popen([OVERLAY_PATH, '-monitor', '2', '-screen-fullscreen', '1'])
+        MANAGER = CrossCountryManager(setup['csv'], socketio)
+        socketio.emit('event-reset', MANAGER.get_event_object(), broadcast=True)
+        return 'OK'
+    else:
+        return
 
 @app.route('/newrace', methods=['POST'])
 def new_race():
-    csv = request.form['csv']
-    MANAGER.new_race(csv)
-    socketio.emit('event-reset', MANAGER.get_event_object(), broadcast=True)
-    return 'OK'
+    global LOCALKEY
+    if request.args['key'] == LOCALKEY:
+        csv = request.form['csv']
+        MANAGER.new_race(csv)
+        socketio.emit('event-reset', MANAGER.get_event_object(), broadcast=True)
+        return 'OK'
+    else:
+        return
 
 @app.route('/timekeeper')
 def timekeeper():
@@ -45,7 +64,11 @@ def timekeeper():
 @app.route('/admin')
 def admin():
     global MANAGER
-    return render_template('admin.html', version=VERSION, runners=MANAGER.runners, splits=MANAGER.split_labels, title=MANAGER.title, tag=MANAGER.tag)
+    global LOCALKEY
+    if request.args['key'] == LOCALKEY:
+        return render_template('admin.html', version=VERSION, runners=MANAGER.runners, splits=MANAGER.split_labels, title=MANAGER.title, tag=MANAGER.tag)
+    else:
+        return
 
 @app.route('/splits')
 def splits():
@@ -120,6 +143,15 @@ def update_lower_third(json):
     MANAGER.update_lower_third(json['title'], json['subtitle'])
     return emit('lower_third_update', MANAGER.lower_third, broadcast=True)
 
+@app.route('/terminate')
+def terminate():
+    global OVERLAY_PROCESS
+    global LOCALKEY
+    if request.args['key'] == LOCALKEY:
+        if OVERLAY_PROCESS:
+            OVERLAY_PROCESS.kill()
+        os.system("taskkill /F /PID " + str(os.getpid()))
+
 if __name__ == '__main__':
-    # bundled(VERSION, app)
-    socketio.run(app, port=5000)
+    LOCALKEY, port, OVERLAY_PATH = bundled(app)
+    socketio.run(app, port=port)

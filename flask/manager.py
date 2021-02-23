@@ -521,7 +521,10 @@ class Overlay:
     
     def new_race(self, title, tag):
         self.race_start = 0
-        self.clock_thread.join()
+        print('restart')
+        print(self.clock_thread.is_alive())
+        if self.clock_thread.is_alive():
+            self.clock_thread.join()
         self.title = title
         self.tag = tag
         self.clock_thread = Thread(target=self.clock_pulse)

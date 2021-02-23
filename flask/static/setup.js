@@ -39,12 +39,15 @@ async function SubmitEventForm(e) {
         let csv = await eventAthletes.files[0].text()
         payload.append('csv', csv)
 
-        fetch('/init', {
+        let u = new URL(window.location.href)
+        let key = u.searchParams.get('key') 
+
+        fetch(`/init?key=${key}`, {
             method: 'POST',
             cache: 'no-cache',
             body: payload
         }).then(res => {
-            window.location.href = '/admin'
+            window.location.href = `/admin?key=${key}`
         })
 
     }

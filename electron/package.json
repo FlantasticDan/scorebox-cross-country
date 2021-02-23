@@ -1,0 +1,20 @@
+{
+  "name": "scorebox-cross-country",
+  "version": "0.3.0",
+  "description": "Timing and broadcast overlay system for cross country events.",
+  "main": "main.js",
+  "repository": "https://github.com/FlantasticDan/scorebox-cross-country",
+  "author": "Daniel Flanagan",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^11.3.0",
+    "electron-builder": "^22.9.1"
+  },
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "electron-fetch": "^1.7.3",
+    "randomstring": "^1.1.5"
+  }
+}

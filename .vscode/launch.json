@@ -9,6 +9,7 @@
             "type": "python",
             "request": "launch",
             "program": "flask/main.py",
+            "args": ["test", "5000", "C:\\Users\\danie\\Documents\\GitHub\\scorebox-cross-country\\builds\\v0.3\\Scorebox Cross Country Overlay.exe"],
             "console": "integratedTerminal"
         }
     ]

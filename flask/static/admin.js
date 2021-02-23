@@ -275,11 +275,14 @@ async function importCSV() {
 
     payload.append('csv', csv)
 
-    fetch('/newrace', {
+    let u = new URL(window.location.href)
+    let key = u.searchParams.get('key') 
+
+    fetch(`/newrace?key=${key}`, {
         method: 'POST',
         cache: 'no-cache',
         body: payload
     }).then(res => {
-        window.location.href = '/admin'
+        window.location.href = window.location.href
     })
 }
