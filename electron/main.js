@@ -1,5 +1,6 @@
 const { app, BrowserWindow } = require('electron')
 const fetch = require('electron-fetch').default
+require ('hazardous');
 const path = require('path')
 const randomString = require('randomstring')
 

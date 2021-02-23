@@ -280,6 +280,11 @@
     "normalize-url" "^4.1.0"
     "responselike" "^1.0.2"
 
+"callsite@^1.0.0":
+  "integrity" "sha1-KAOY5dZkvXQDi28JBRU+borxvCA="
+  "resolved" "https://registry.npmjs.org/callsite/-/callsite-1.0.0.tgz"
+  "version" "1.0.0"
+
 "camelcase@^5.3.1":
   "integrity" "sha512-L28STB170nwWS63UjtlEOE3dldQApaJXZkOI1uMFfzf3rRuPegHaHesyee+YxQ+W6SvRDQV6UrdOdRiR153wJg=="
   "resolved" "https://registry.yarnpkg.com/camelcase/-/camelcase-5.3.1.tgz"
@@ -770,6 +775,13 @@
   "version" "1.0.3"
   dependencies:
     "function-bind" "^1.1.1"
+
+"hazardous@^0.3.0":
+  "integrity" "sha512-VLSlBMoLTnfScKBJTycufZ2OHLO06eS3Q0mxNdHJ+egd1QLqeLitxDeGeUuoIgOqSPer+uqZCxiv43a1EVmwdg=="
+  "resolved" "https://registry.npmjs.org/hazardous/-/hazardous-0.3.0.tgz"
+  "version" "0.3.0"
+  dependencies:
+    "callsite" "^1.0.0"
 
 "hosted-git-info@^2.1.4":
   "integrity" "sha512-f/wzC2QaWBs7t9IYqB4T3sR1xviIViXJRJTWBlx2Gf3g0Xi5vI7Yy4koXQ1c9OYDGHN9sBy1DQ2AB8fqZBWhUg=="

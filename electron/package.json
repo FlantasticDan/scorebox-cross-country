@@ -11,10 +11,27 @@
     "electron-builder": "^22.9.1"
   },
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "dist": "electron-builder"
   },
   "dependencies": {
     "electron-fetch": "^1.7.3",
+    "hazardous": "^0.3.0",
     "randomstring": "^1.1.5"
+  },
+  "build": {
+    "appId": "com.scorebox.crosscountry",
+    "productName": "ScoreBox Cross Country",
+    "asar": true,
+    "asarUnpack": [
+      "bundles/**/*"
+    ],
+    "files": [
+      "bundles/**/*",
+      "main.js"
+    ],
+    "win": {
+      "target": "portable"
+    }
   }
 }
