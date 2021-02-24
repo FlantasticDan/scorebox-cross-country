@@ -8,8 +8,8 @@ const key = randomString.generate(12)
 
 function createWindow () {
   const win = new BrowserWindow({
-    width: 1800,
-    height: 920,
+    width: 1120,
+    height: 880,
     backgroundColor: '#121212',
     webPreferences: {
       nodeIntegration: false,
@@ -20,7 +20,7 @@ function createWindow () {
   win.removeMenu()
   win.setTitle('ScoreBox')
   win.loadURL(`http://localhost:5000/setup?key=${key}`)
-  win.webContents.openDevTools()
+  // win.webContents.openDevTools()
 
   win.on('close', (e) => {
     e.preventDefault()
