@@ -31,7 +31,8 @@
       "main.js"
     ],
     "win": {
-      "target": "portable"
+      "target": "portable",
+      "icon": "icon.ico"
     }
   }
 }

@@ -1,19 +1,25 @@
+# Electron Bundles Folder
+This folder contains the built and bundled binaries to be bundled with the Electron build.  It should contain two folders: `/flask` and `/unity`.
+
+## /flask
 This directory should contain the Pyinstaller bundle of `flask/main.py` with `main.exe` as the entry point.
 
-# Building
-`pyinstaller --distpath /bundles/flask --workpath /build main.spec`
+### Building
+Run this command in the project root directory:
+`pyinstaller --distpath electron/bundles/flask --workpath flask/build flask.spec`
 
-### Pyinstaller Spec File
+#### Pyinstaller Spec File
+Save as `flask.spec` in the project root directory.
 ```spec
 # -*- mode: python ; coding: utf-8 -*-
 
 block_cipher = None
 
 
-a = Analysis(['main.py'],
-             pathex=['PATH TO main.py'],
+a = Analysis(['flask/main.py'],
+             pathex=['flask'],
              binaries=[],
-             datas=[('templates', 'templates'), ('static', 'static')],
+             datas=[('flask/templates', 'templates'), ('flask/static', 'static')],
              hiddenimports=[
                  'engineio.async_drivers.eventlet',
                  'eventlet.hubs.epolls',
@@ -54,5 +60,8 @@ coll = COLLECT(exe,
                strip=False,
                upx=True,
                upx_exclude=[],
-               name='main')
+               name='flask')
 ```
+
+## /unity
+This directory should contain the Unity Build files with `Scorebox Cross Country Overlay.exe` as the entry point.

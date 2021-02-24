@@ -1,1 +1,0 @@
-This directory should contain the Unity Build files with `Scorebox Cross Country Overlay.exe` as the entry point.
