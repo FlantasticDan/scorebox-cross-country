@@ -6,7 +6,7 @@ This directory should contain the Pyinstaller bundle of `flask/main.py` with `ma
 
 ### Building
 Run this command in the project root directory:
-`pyinstaller --distpath electron/bundles/flask --workpath flask/build flask.spec`
+`pyinstaller --distpath electron/bundles --workpath flask/build flask.spec`
 
 #### Pyinstaller Spec File
 Save as `flask.spec` in the project root directory.
