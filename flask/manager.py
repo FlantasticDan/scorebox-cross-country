@@ -182,6 +182,10 @@ class CrossCountryManager:
 
         self.update_newist_split(100)
 
+        if len(self.finish) == len(self.runners):
+            self.update_visibility('clock', False)
+            self.socketio.emit('visibility-update', {'state': self.visibility['clock'], 'key': 'clock'}, namespace='/admin')
+
     def change_result(self, jersey, initial, timestamp, split):
         if split == 'finish':
             if initial == 'unknown':
@@ -210,6 +214,10 @@ class CrossCountryManager:
                 self.overlay.push_json(self.export_placements())
             else:
                 self.split(split, self.get_runner_from_jersey(int(jersey)), timestamp)                    
+
+        if str(type(self.finish)) == "<class 'list'>" and (len(self.finish) != len(self.runners)):
+            self.update_visibility('clock', True)
+            self.socketio.emit('visibility-update', {'state': self.visibility['clock'], 'key': 'clock'}, namespace='/admin')
 
     def get_runner_from_jersey(self, jersey: int):
         for runner in self.runners:
