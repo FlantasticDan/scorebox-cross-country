@@ -136,9 +136,9 @@ class CrossCountryManager:
         self.runners[runner_index]['splits'][split_index] = timestamp
         self.splits[split_index] = self.get_results(split_index)
 
-        self.update_newist_split(split_index)
-
         self.overlay.push_json(self.export_placements())
+
+        self.update_newist_split(split_index)
 
     def split_unknown(self, split_index: int, timestamp: int):
         unknown = {
@@ -154,8 +154,8 @@ class CrossCountryManager:
         self.unknowns['splits'][split_index].append(unknown)
 
         self.splits[split_index] = self.get_results(split_index)
-        self.update_newist_split(split_index)
         self.overlay.push_json(self.export_placements())
+        self.update_newist_split(split_index)
 
     def finish_unknown(self, timestamp: int):
         unknown = {
@@ -171,16 +171,16 @@ class CrossCountryManager:
         self.unknowns['finish'].append(unknown)
 
         self.finish = self.get_finish_results()
-        self.update_newist_split(100)
         self.overlay.push_json(self.export_placements())
+        self.update_newist_split(100)
 
     def finish_runner(self, runner_index: int, timestamp):
         self.runners[runner_index]['finish'] = timestamp
         self.finish = self.get_finish_results()
 
-        self.update_newist_split(100)
-
         self.overlay.push_json(self.export_placements())
+
+        self.update_newist_split(100)
 
     def change_result(self, jersey, initial, timestamp, split):
         if split == 'finish':

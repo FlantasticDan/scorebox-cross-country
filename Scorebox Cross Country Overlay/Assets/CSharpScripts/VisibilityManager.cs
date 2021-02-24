@@ -17,7 +17,7 @@ public class VisibilityManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         clockContainer.SetActive(visibilitymanager["clock"]);
         splitContainer.SetActive(visibilitymanager["placement"]);
