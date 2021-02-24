@@ -40,7 +40,7 @@ function formatPreciseTime(milliseconds){
 }
 
 function timerTick() {
-    const reference = Date.now()
+    const reference = Date.now() + window.eventObject['server_time']
     if (window.eventObject.start > 0) {
         clock.innerText = formatTime(reference - window.eventObject.start)
     }
@@ -110,6 +110,12 @@ socket.on('disconnect', () => {
 })
 
 socket.on('event-reset', payload => {
+    payload['server_time'] = payload['server_time'] - Date.now()
+    if (window.eventObject) {
+        if ((window.eventObject.start != payload.start && payload.start == 0) || window.eventObject.title != payload.title) {
+            location.reload()
+        }
+    }
     window.eventObject = payload
     clock.classList.remove('disconnected')
     updateEvent()
@@ -285,4 +291,17 @@ async function importCSV() {
     }).then(res => {
         window.location.href = window.location.href
     })
+}
+
+const splitTableArrow = document.getElementById('split-accordian-btn')
+const splitTable = document.getElementById('split-table')
+splitTable.style.maxHeight = splitTable.scrollHeight + "px"
+splitTableArrow.onclick = () => {
+    splitTableArrow.classList.toggle('up')
+    if (splitTable.style.maxHeight) {
+        splitTable.style.maxHeight = null
+    }
+    else {
+        splitTable.style.maxHeight = splitTable.scrollHeight + "px"
+    }
 }

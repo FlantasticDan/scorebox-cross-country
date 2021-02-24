@@ -110,6 +110,12 @@ socket.on('disconnect', () => {
 })
 
 socket.on('event-reset', payload => {
+    payload['server_time'] = payload['server_time'] - Date.now()
+    if (window.eventObject) {
+        if ((window.eventObject.start != payload.start && payload.start == 0) || window.eventObject.title != payload.title) {
+            location.reload()
+        }
+    }
     window.eventObject = payload
     clock.classList.remove('disconnected')
     updateEvent()

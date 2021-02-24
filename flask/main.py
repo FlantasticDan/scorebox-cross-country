@@ -13,7 +13,7 @@ LOCALKEY = 'debug'
 OVERLAY_PATH = None
 OVERLAY_PROCESS = None
 
-VERSION = 'v. 0.3 (02212021)'
+VERSION = 'v. 0.3 (02232021)'
 
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode='eventlet')
@@ -21,6 +21,10 @@ socketio = SocketIO(app, cors_allowed_origins="*", async_mode='eventlet')
 @app.route('/')
 def index():
     return splits()
+
+@app.route('/favicon.ico')
+def favicon():
+    return app.send_static_file('icons/favicon.ico')
 
 @app.route('/setup')
 def setup():

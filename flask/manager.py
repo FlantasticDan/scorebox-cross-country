@@ -320,7 +320,8 @@ class CrossCountryManager:
             'runners': self.runners,
             'heats': self.heat_object,
             'unknowns': self.unknowns,
-            'server_time': int(time.time() * 1000)
+            'server_time': int(time.time() * 1000),
+            'title': self.title
         }
     
     def export_placements(self):
@@ -521,8 +522,6 @@ class Overlay:
     
     def new_race(self, title, tag):
         self.race_start = 0
-        print('restart')
-        print(self.clock_thread.is_alive())
         if self.clock_thread.is_alive():
             self.clock_thread.join()
         self.title = title

@@ -437,8 +437,8 @@ button.grid-btn .runner-clock{
 #split-settings{
     display: grid;
     place-items: center;
-    grid-template-columns: repeat(2, 1fr);
-    max-width: 780px;
+    grid-template-columns: repeat(2, 1fr) auto;
+    max-width: 840px;
     margin: auto;
     gap: 1em;
     padding-bottom: 1em;
@@ -448,6 +448,12 @@ button.grid-btn .runner-clock{
     width: 100%;
     border: 2px solid var(--mid-grey);
     border-collapse: collapse;
+}
+
+#split-table{
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.5s;
 }
 
 #split-dashboard th, #split-dashboard td{
@@ -463,6 +469,29 @@ button.grid-btn .runner-clock{
 
 #split-dashboard tr:nth-child(odd) td{
     background-color: var(--less-dark-grey);
+}
+
+button.icon{
+    background-color: #42424263;
+    border: 0px solid;
+    outline: 0px;
+    cursor: pointer;
+}
+
+button.icon:hover{
+    background-color: var(--less-dark-grey);
+}
+
+#split-dashboard button.icon{
+    height: 59px;
+}
+
+#split-accordian-btn.up img {
+    transform: rotate(180deg);
+}
+
+#split-accordian-btn img {
+    transition: 0.5s;
 }
 
 #lower-third-settings{

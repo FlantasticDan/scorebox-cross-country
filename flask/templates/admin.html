@@ -10,6 +10,10 @@
 
         <link rel="stylesheet" href="/static/main.css">
 
+        <link rel="apple-touch-icon" sizes="180x180" href="/static/icons/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/static/icons/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/static/icons/favicon-16x16.png">
+
     </head>
 
     <body>
@@ -79,37 +83,40 @@
                     <button class="toggle" id="toggle-splits-auto-no">No</button>
                     <button class="toggle toggled" id="toggle-splits-auto-yes">Yes</button>
                 </div>
+                <button id="split-accordian-btn" class="icon up"><img src="/static/img/down-arrow-white.png" height="45px"></button>
             </div>
 
-            <table>
-                <tr>
-                    <th>Jersey</th>
-                    <th>Team</th>
-                    <th>Name</th>
-                    {% for split in splits %}
-                    <th>Split</th>
-                    <th>{{split}}</th>
+            <div id="split-table">
+                <table>
+                    <tr>
+                        <th>Jersey</th>
+                        <th>Team</th>
+                        <th>Name</th>
+                        {% for split in splits %}
+                        <th>Split</th>
+                        <th>{{split}}</th>
+                        {% endfor %}
+                        <th>Split</th>
+                        <th>Finish</th>
+                    </tr>
+                    
+                    {% for runner in runners %}
+                    {% set run_loop = loop %}
+                    <tr>
+                        <td>{{runner.jersey}}</td>
+                        <td>{{runner.team}}</td>
+                        <td>{{runner.name}}</td>
+                        {% for split in splits %}
+                        <td id="runner{{run_loop.index0}}-split-{{loop.index0}}-split"></td>
+                        <td id="runner{{run_loop.index0}}-split-{{loop.index0}}-total"></td>
+                        {% endfor %}
+                        <td id="runner{{run_loop.index0}}-finish-split"></td>
+                        <td id="runner{{run_loop.index0}}-finish-total"></td>
+                    </tr>
                     {% endfor %}
-                    <th>Split</th>
-                    <th>Finish</th>
-                </tr>
-                
-                {% for runner in runners %}
-                {% set run_loop = loop %}
-                <tr>
-                    <td>{{runner.jersey}}</td>
-                    <td>{{runner.team}}</td>
-                    <td>{{runner.name}}</td>
-                    {% for split in splits %}
-                    <td id="runner{{run_loop.index0}}-split-{{loop.index0}}-split"></td>
-                    <td id="runner{{run_loop.index0}}-split-{{loop.index0}}-total"></td>
-                    {% endfor %}
-                    <td id="runner{{run_loop.index0}}-finish-split"></td>
-                    <td id="runner{{run_loop.index0}}-finish-total"></td>
-                </tr>
-                {% endfor %}
 
-            </table>
+                </table>
+            </div>
         </div>
         
         <div id="lower-third-dashboard" class="dash-contents">
