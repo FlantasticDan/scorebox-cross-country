@@ -129,6 +129,9 @@ function formatPreciseTime(milliseconds){
 
 const clock = document.getElementById('clock')
 function timerTick() {
+    if (!window.eventObject) {
+        return
+    }
     const reference = Date.now() + window.eventObject['server_time']
     if (window.eventObject.start > 0) {
         clock.innerText = formatTime(reference - window.eventObject.start)
@@ -189,6 +192,7 @@ socket.on('event-reset', payload => {
     payload['server_time'] = payload['server_time'] - Date.now()
     if (window.eventObject) {
         if ((window.eventObject.start != payload.start && payload.start == 0) || window.eventObject.title != payload.title) {
+            window.scrollTo(0, 0)
             location.reload()
         }
     }
@@ -350,7 +354,7 @@ function placementsToResults(placements) {
         addition = `
         <form class="split-result" onsubmit="return ChangeResult(this)" autocomplete="off">
             <div class="result-placement">${p + 1}</div>
-            <input type="text" onclick="this.setSelectionRange(0, this.value.length)" class="result-jersey color ${placement.color}" inputmode="numeric" name="jersey" value="${placement.jersey}" data-initialindex="${placement.ix}" data-timestamp="${placement.timestamp}" data-split="${placement.split}">
+            <input type="text" onclick="this.setSelectionRange(0, this.value.length)" class="result-jersey color ${placement.color}" inputmode="decimal" name="jersey" value="${placement.jersey}" data-initialindex="${placement.ix}" data-timestamp="${placement.timestamp}" data-split="${placement.split}">
             <div class="result-name">${placement.runnerName}</div>
             <div class="result-time">${placement.display}</div>
             <input type="submit" class="btn" value="Update">

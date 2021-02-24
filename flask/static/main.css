@@ -295,6 +295,8 @@ button.menu-btn{
     color: var(--mid-grey);
     border: 2px solid var(--mid-grey);
     cursor: pointer;
+    padding: 0;
+    margin: 0;
 }
 
 button.menu-btn.checked{
@@ -305,7 +307,7 @@ button.menu-btn.checked{
 
 .btn-grid{
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(115px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(6em, 1fr));
     gap: 1em;
     margin: auto 1em;
 }
@@ -323,7 +325,7 @@ button.grid-btn{
     place-items: center;
     display: grid;
     grid-template-rows: 1fr auto auto;
-    height: 132px;
+    height: 10em;
 }
 
 button.grid-btn.red, .result-jersey.color.red{
@@ -613,6 +615,8 @@ input.btn, input.btn:focus {
     margin: auto 0.5em;
     cursor: pointer;
     font-size: 0.75em;
+    -webkit-appearance: unset;
+    border-radius: 0;
 }
 
 .split-result input[type="text"]{
@@ -628,6 +632,9 @@ input.btn, input.btn:focus {
     outline: 0px;
     margin: 0.25em auto;
     color: white;
+    padding: 0;
+    -webkit-appearance: unset;
+    border-radius: 0;
 }
 
 .split-result input[type="text"]:focus{
