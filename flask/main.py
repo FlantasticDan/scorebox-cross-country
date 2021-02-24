@@ -13,7 +13,7 @@ LOCALKEY = 'debug'
 OVERLAY_PATH = None
 OVERLAY_PROCESS = None
 
-VERSION = 'v. 0.3 (02232021)'
+VERSION = 'v. 1.0.0 (02242021)'
 
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode='eventlet')
