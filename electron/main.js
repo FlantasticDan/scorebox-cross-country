@@ -20,12 +20,22 @@ function createWindow () {
   win.removeMenu()
   win.setTitle('ScoreBox')
   win.loadURL(`http://localhost:5000/setup?key=${key}`)
-  // win.webContents.openDevTools()
+  win.webContents.openDevTools()
 
   win.on('close', (e) => {
     e.preventDefault()
     killPython()
     win.destroy()
+  })
+
+  win.webContents.session.on('will-download', (e, item, contents) => {
+    item.setSaveDialogOptions({
+      title: "Export Splits",
+      filters: [{
+        name: "CSV",
+        extensions: ["csv"]
+      }]
+    })
   })
 }
 
@@ -43,8 +53,9 @@ function launchPython() {
     let unity = path.join(__dirname, "bundles", "unity", "Scorebox Cross Country Overlay.exe")
     flaskCore = require('child_process').spawn(flask, [key, '5000', unity])
 }
-function killPython() {
-    fetch(`http://localhost:5000/terminate?key=${key}`).catch(e => {})
+
+async function killPython() {
+    await fetch(`http://localhost:5000/terminate?key=${key}`).catch(e => {})
 }
   
 app.on('ready', launchPython)
