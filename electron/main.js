@@ -20,7 +20,7 @@ function createWindow () {
   win.removeMenu()
   win.setTitle('ScoreBox')
   win.loadURL(`http://localhost:5000/setup?key=${key}`)
-  win.webContents.openDevTools()
+  // win.webContents.openDevTools()
 
   win.on('close', (e) => {
     e.preventDefault()

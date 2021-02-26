@@ -22,6 +22,9 @@ body{
     user-select: none;
     color: white;
     font-family: 'Source Sans Pro';
+}
+
+body#center{
     height: 100vh;
 }
 
@@ -396,6 +399,7 @@ button.grid-btn .runner-clock{
     background-color: var(--less-dark-grey);
     position: sticky;
     top: 0px;
+    z-index: 1;
 }
 
 .dash-contents{
